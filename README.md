@@ -25,7 +25,7 @@ mvn spring-boot:run -Dspring.profiles.active=custom
 ## TODO
 * Mudar para Gradle
 * Adicionar a opção de fazer build com Docker
-* Quando não existir `api.acceptedHeaders` não precisa validar
+* -Quando não existir `api.acceptedHeaders` não precisa validar
 * Separar testes unitários dos testes integrados
 * Corrigir os testes ignorados
 * Corrigir Code Style

@@ -16,7 +16,7 @@ import static java.util.Collections.emptyList;
 @ConfigurationProperties(prefix = "api")
 public class ApiProperty {
 
-    private List<String> acceptedHeaders;
+    private List<String> acceptedHeaders = new ArrayList<>();
     private String host;
     private List<UriConfiguration> uriConfigurations;
     private List<DefaultHeader> defaultHeaders;
@@ -26,11 +26,11 @@ public class ApiProperty {
     }
 
     public void setAcceptedHeaders(List<String> acceptedHeaders) {
-        this.acceptedHeaders = acceptedHeaders.stream().map(String::toLowerCase).collect(Collectors.toList());
+        this.acceptedHeaders = getAcceptedHeaders().stream().map(String::toLowerCase).collect(Collectors.toList());
     }
 
     public Boolean isAcceptedHeader(final String headerValue) {
-        return acceptedHeaders.contains(headerValue.toLowerCase());
+        return getAcceptedHeaders().isEmpty() || getAcceptedHeaders().contains(headerValue.toLowerCase());
     }
 
     public void setUriConfigurations(List<UriConfiguration> uriConfigurations) {
