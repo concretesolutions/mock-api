@@ -3,9 +3,10 @@
 server.port: 9090
 
 api:
-  acceptedHeaders:
-    - "accept"
-    - "Content-Type"
+  # Requests accept just this headers (optinal property). If property not exists, all headers are accepted
+#  acceptedHeaders:
+#    - "accept"
+#    - "Content-Type"
 
   # When is not find in repository, then will try to do a request in this host
   host: "http://www.mocky.io"
