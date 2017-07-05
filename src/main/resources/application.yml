@@ -1,0 +1,47 @@
+# vmoptions: -Dspring.profiles.active=test
+
+server.port: 9090
+
+api:
+  acceptedHeaders:
+    - "accept"
+    - "Content-Type"
+
+  # When is not find in repository, then will try to do a request in this host
+  host: "http://www.mocky.io"
+
+  # Default headers to do a request
+  defaultHeaders:
+    -
+      headerName: "Access-Control-Allow-Origin"
+      headerValues:
+        - "Connection"
+        - "Keep-Alive"
+    -
+      headerName: "Content-Type"
+      headerValues:
+        - "application/json;charset=UTF-8"
+
+  # Alternative hosts
+  # When a request uri match with some pattern, than this host will be used
+  uriConfigurations:
+    -
+      host: "http://www.mocky2.io"
+      pattern: "begin-of-uri/|another-pattern/"
+      backup: false
+    -
+      host: "http://www.mocky3.io"
+      pattern: "teste/|test/"
+
+# Paths of json
+file:
+  # Look for this path to find json with a request
+  base: "${MOCK_API_FILE_BASE}"
+  extension: ".json"
+  # Save request (cache) in this path
+  backup.path: "${MOCK_BACKUP_FILE_BASE}"
+
+# Initialize app in capture mode. All requests will be saved
+captureState: true
+
+debug: true
