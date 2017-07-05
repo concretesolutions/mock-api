@@ -1,0 +1,14 @@
+{
+  "request": {
+    "body": {
+      "pi": "j12"
+    }
+  },
+  "response": {
+    "body": {
+      "codigo": "123",
+      "mensagem": "Error :("
+    },
+    "httpStatus": "422"
+  }
+}

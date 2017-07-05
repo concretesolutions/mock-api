@@ -1,0 +1,8 @@
+{
+  "response": {
+    "body": {
+      "name": "Paul",
+      "age": 10
+    }
+  }
+}
