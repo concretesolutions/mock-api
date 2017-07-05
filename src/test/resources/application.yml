@@ -1,0 +1,40 @@
+# vmoptions: -Dspring.profiles.active=test
+
+server.port: 9090
+
+api:
+  acceptedHeaders:
+    - "execute"
+    - "Content-Type"
+  host: "http://www.mocky.io"
+  defaultHeaders:
+    -
+      headerName: "Access-Control-Allow-Origin"
+      headerValues:
+        - "Connection"
+        - "Keep-Alive"
+    -
+      headerName: "Content-Type"
+      headerValues:
+        - "application/json;charset=UTF-8"
+  uriConfigurations:
+    -
+      host: "http://www.mocky.io"
+      pattern: "/v2/57fbd6280f0000ed154fd470"
+      backup: false
+    -
+      host: "http://www.mocky.io"
+      pattern: "/v2/5928a3aa0f0000140538834a"
+      backup: true
+    -
+      host: "/teste.html"
+      pattern: "teste/|test/"
+
+file:
+  base: "mocks-test"
+  extension: ".json"
+  backup.path: "backup-temp"
+
+captureState: false
+
+debug: true

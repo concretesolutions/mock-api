@@ -1,0 +1,13 @@
+{
+  "request": {
+    "query": {
+      "payment": "22"
+    }
+  },
+  "response": {
+    "body": {
+      "name": "John"
+    },
+    "httpStatus": 202
+  }
+}

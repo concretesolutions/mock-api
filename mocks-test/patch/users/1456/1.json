@@ -1,0 +1,12 @@
+{
+  "request": {
+    "body": {
+      "result": "done"
+    }
+  },
+  "response": {
+    "body": {
+      "sync": "success"
+    }
+  }
+}
