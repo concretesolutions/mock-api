@@ -1,0 +1,18 @@
+{
+  "request": {
+    "query": {
+      "payment": "1",
+      "value": "10"
+    }
+  },
+  "response": {
+    "body": [
+      {
+        "total": "1700"
+      },
+      {
+        "total": "1800"
+      }
+    ]
+  }
+}
