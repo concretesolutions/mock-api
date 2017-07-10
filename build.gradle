@@ -1,0 +1,41 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.7.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '4.0.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter', {
+        exclude module: 'org.apache.httpcomponents:httpclient'
+    })
+    compile 'org.springframework.boot:spring-boot-starter-undertow'
+    compile 'org.springframework.boot:spring-boot-starter-hateoas'
+    compile 'com.google.code.gson:gson'
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0'
+    compile 'net.minidev:json-smart:1.0.8'
+    compile 'org.apache.httpcomponents:httpclient'
+    compile 'com.google.guava:guava:22.0'
+    compile 'org.modelmapper:modelmapper:0.7.5'
+    compile 'commons-io:commons-io:2.5'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'br.com.six2six:fixture-factory:3.1.0'
+}
