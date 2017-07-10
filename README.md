@@ -23,7 +23,6 @@ mvn spring-boot:run -Dspring.profiles.active=custom
 ```
 
 ## TODO
-* -Mudar para Gradle
 * Adicionar a opção de fazer build com Docker
 * Separar testes unitários dos testes integrados
 * Corrigir os testes ignorados
