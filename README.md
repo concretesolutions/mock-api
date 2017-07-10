@@ -23,9 +23,12 @@ mvn spring-boot:run -Dspring.profiles.active=custom
 ```
 
 ## TODO
-* Mudar para Gradle
+* -Mudar para Gradle
 * Adicionar a opção de fazer build com Docker
 * Separar testes unitários dos testes integrados
 * Corrigir os testes ignorados
 * Corrigir Code Style
 * Adcionar plugin do FindBugs
+* Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
+* Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`
+* Atualizar versão do Spring Boot
