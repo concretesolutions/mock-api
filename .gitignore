@@ -30,3 +30,4 @@ nbdist/
 backup-temp/
 mocks-prod
 fake-api-data
+out
