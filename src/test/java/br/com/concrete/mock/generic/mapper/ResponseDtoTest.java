@@ -6,6 +6,7 @@ import br.com.concrete.mock.infra.component.impl.FromJsonStringToObjectConverter
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.google.gson.Gson;
+import org.json.JSONException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -21,7 +22,7 @@ public class ResponseDtoTest {
     }
 
     @Test
-    public void shouldConvertFromJsonAnObject() {
+    public void shouldConvertFromJsonAnObject() throws JSONException {
         // given
         final String json = "{ \"body\": { \"tt\": \"789\" } }";
 
@@ -51,7 +52,7 @@ public class ResponseDtoTest {
     }
 
     @Test
-    public void shouldBeSerializableWhenIsObject() {
+    public void shouldBeSerializableWhenIsObject() throws JSONException {
         // given
         final Response model = Fixture.from(Response.class).gimme(ResponseTemplate.VALID_FULL);
         final String expectedJson = "{ \"body\": {\"name\": \"Paul\"} }";
@@ -65,7 +66,7 @@ public class ResponseDtoTest {
     }
 
     @Test
-    public void shouldBeSerializableWhenIsArray() {
+    public void shouldBeSerializableWhenIsArray() throws JSONException {
         // given
         final Response model = Fixture.from(Response.class).gimme(ResponseTemplate.VALID_WITH_LIST);
         final String expectedJson = "{ \"body\": [ {\"name\": \"Paul\"}, {\"name\": \"Peter\"} ] }";

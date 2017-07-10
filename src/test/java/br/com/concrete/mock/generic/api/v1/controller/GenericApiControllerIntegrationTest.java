@@ -4,6 +4,7 @@ import br.com.concrete.mock.infra.component.QueryStringBuilder;
 import br.com.concrete.mock.generic.mapper.EndpointDto;
 import br.com.concrete.mock.generic.model.Endpoint;
 import com.google.gson.Gson;
+import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +59,7 @@ public class GenericApiControllerIntegrationTest {
         return Files.exists(path) ? new String(Files.readAllBytes(path)) : "{}";
     }
 
-    private void shouldResolveGetWithLocalMockMatchQueryCaseX(String uri, String caseX) throws IOException {
+    private void shouldResolveGetWithLocalMockMatchQueryCaseX(String uri, String caseX) throws IOException, JSONException {
         // given
         final String fileName = resource.getFile().concat("get").concat(uri).concat("/").concat(caseX).concat(fileExtension);
 
@@ -85,7 +86,7 @@ public class GenericApiControllerIntegrationTest {
     }
 
     @Test(timeout = 2000)
-    public void shouldResolveGetWithSimpleResponseWithoutRequest() throws IOException {
+    public void shouldResolveGetWithSimpleResponseWithoutRequest() throws IOException, JSONException {
         // given
         final String uri = "/guests/132/users/21/cc";
         final String fileName = resource.getFile().concat("get" + uri + "/1" + fileExtension);
@@ -103,7 +104,7 @@ public class GenericApiControllerIntegrationTest {
     }
 
     @Test(timeout = 2000)
-    public void shouldResolveGetWithSimpleResponseWithRequest() throws IOException {
+    public void shouldResolveGetWithSimpleResponseWithRequest() throws IOException, JSONException {
         // given
         final String uri = "/guests/132/users/22/cc";
         final String fileName = resource.getFile().concat("get" + uri + "/1" + fileExtension);
@@ -121,7 +122,7 @@ public class GenericApiControllerIntegrationTest {
     }
 
     @Test(timeout = 2000)
-    public void shouldResolveGetWithLocalMock() throws IOException {
+    public void shouldResolveGetWithLocalMock() throws IOException, JSONException {
         // given
         final String uri = "/users/123";
 
@@ -138,7 +139,7 @@ public class GenericApiControllerIntegrationTest {
     }
 
     @Test(timeout = 2000)
-    public void shouldResolveWithHttpStatusCreated() throws IOException {
+    public void shouldResolveWithHttpStatusCreated() throws IOException, JSONException {
         // given
         final String uri = "/users/123";
 
@@ -156,31 +157,31 @@ public class GenericApiControllerIntegrationTest {
     }
 
     @Test(timeout = 2000)
-    public void shouldResolvePatchWithLocalMock() throws IOException {
+    public void shouldResolvePatchWithLocalMock() throws IOException, JSONException {
         shouldResolveWithLocalMockMatcheRequest("/users/1456", "1", HttpStatus.OK, HttpMethod.PATCH);
     }
 
     @Test(timeout = 2000)
-    public void shouldResolveGetWithLocalMockMatchQueryCase1() throws IOException {
+    public void shouldResolveGetWithLocalMockMatchQueryCase1() throws IOException, JSONException {
         shouldResolveGetWithLocalMockMatchQueryCaseX("/payments/user/detail", "1");
     }
 
     @Test(timeout = 2000)
-    public void shouldResolveGetWithLocalMockMatchQueryCase2() throws IOException {
+    public void shouldResolveGetWithLocalMockMatchQueryCase2() throws IOException, JSONException {
         shouldResolveGetWithLocalMockMatchQueryCaseX("/payments/user/detail", "2");
     }
 
     // fail
     @Test(timeout = 2000)
-    public void shouldResolveGetWithLocalMockWithSubDirectory() throws IOException {
+    public void shouldResolveGetWithLocalMockWithSubDirectory() throws IOException, JSONException {
         shouldResolveGetWithLocalMockMatchQueryCaseX("/guests/132", "1");
     }
 
-    private void shouldResolvePostWithLocalMockMatcheRequest(final String url, final String caseX, final HttpStatus httpStatus) throws IOException {
+    private void shouldResolvePostWithLocalMockMatcheRequest(final String url, final String caseX, final HttpStatus httpStatus) throws IOException, JSONException {
         shouldResolveWithLocalMockMatcheRequest(url, caseX, httpStatus, HttpMethod.POST);
     }
 
-    private void shouldResolveWithLocalMockMatcheRequest(final String uri, final String caseX, final HttpStatus httpStatus, HttpMethod httpMethod) throws IOException {
+    private void shouldResolveWithLocalMockMatcheRequest(final String uri, final String caseX, final HttpStatus httpStatus, HttpMethod httpMethod) throws IOException, JSONException {
         // given
         final String fileName = resource.getFile().concat(httpMethod.name().toLowerCase()).concat(uri).concat("/").concat(caseX).concat(fileExtension);
 
@@ -202,17 +203,17 @@ public class GenericApiControllerIntegrationTest {
     }
 
     @Test(timeout = 2000)
-    public void shouldResolvePostWithLocalMockMatcheRequest() throws IOException {
+    public void shouldResolvePostWithLocalMockMatcheRequest() throws IOException, JSONException {
         shouldResolvePostWithLocalMockMatcheRequest("/move/to/country/13", "1", HttpStatus.OK);
     }
 
     @Test//(timeout = 2000)
-    public void shouldResolvePostWithLocalMockMatcheRequestCase1() throws IOException {
+    public void shouldResolvePostWithLocalMockMatcheRequestCase1() throws IOException, JSONException {
         shouldResolvePostWithLocalMockMatcheRequest("/move/to/country/13/pi", "1", HttpStatus.OK);
     }
 
     @Test(timeout = 2000)
-    public void shouldResolvePostWithLocalMockMatcheRequestCase2() throws IOException {
+    public void shouldResolvePostWithLocalMockMatcheRequestCase2() throws IOException, JSONException {
         shouldResolvePostWithLocalMockMatcheRequest("/move/to/country/13/pi", "2", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
