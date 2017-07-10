@@ -2,6 +2,7 @@ package br.com.concrete.mock.infra.component.impl;
 
 
 import com.google.gson.Gson;
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,7 +18,7 @@ public class FromJsonStringToObjectConverterImplTest {
     private FromJsonStringToObjectConverterImpl converter;
 
     @Test
-    public void shouldConvertObject() {
+    public void shouldConvertObject() throws JSONException {
         // given
         final String expectedJson = "{ \"name\": \"Peter\", \"age\": 99}";
         final Optional<String> jsonString = Optional.of(expectedJson);
@@ -31,7 +32,7 @@ public class FromJsonStringToObjectConverterImplTest {
     }
 
     @Test
-    public void shouldConvertArray() {
+    public void shouldConvertArray() throws JSONException {
         // given
         final String expectedJson = " [ { \"name\": \"Peter\", \"age\": 99}, { \"name\": \"Paul\", \"age\": 98} ]";
         final Optional<String> jsonString = Optional.of(expectedJson);
@@ -45,7 +46,7 @@ public class FromJsonStringToObjectConverterImplTest {
     }
 
     @Test
-    public void shouldConvertNull() {
+    public void shouldConvertNull() throws JSONException {
         // given
         final String expectedJson = "{ }";
         final Optional<String> jsonString = Optional.of(expectedJson);

@@ -7,6 +7,7 @@ import br.com.concrete.mock.infra.property.FileExtensionProperty;
 import br.com.concrete.mock.infra.property.FileProperty;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+import org.json.JSONException;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -92,7 +93,7 @@ public class EndpointBackupServiceFileIntegrarionTest {
 
     @Test(timeout = 2000)
     @Ignore
-    public void shouldDoARequestAndDoNotCaptureBackupWhenIsNotConfigured() throws IOException {
+    public void shouldDoARequestAndDoNotCaptureBackupWhenIsNotConfigured() throws IOException, JSONException {
         // when
         final ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
 
@@ -104,7 +105,7 @@ public class EndpointBackupServiceFileIntegrarionTest {
     }
 
     @Test//(timeout = 2000)
-    public void shouldDoARequestAndCaptureBackupWhenIsConfigured() throws IOException {
+    public void shouldDoARequestAndCaptureBackupWhenIsConfigured() throws IOException, JSONException {
         // given
         final String path = "/v2/5928a3aa0f0000140538834a";
         final String name = baseName + "get" + path;

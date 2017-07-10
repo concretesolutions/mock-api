@@ -6,6 +6,7 @@ import br.com.concrete.mock.infra.component.impl.FromJsonStringToObjectConverter
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.google.gson.Gson;
+import org.json.JSONException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -54,7 +55,7 @@ public class EndpointDtoTest {
     }
 
     @Test
-    public void shouldConvertFromModel() {
+    public void shouldConvertFromModel() throws JSONException {
         // given
         final Endpoint endpoint = Fixture.from(Endpoint.class).gimme(EndpointTemplate.VALID_FULL);
         final String expectedJson = "{\n" +
@@ -88,7 +89,7 @@ public class EndpointDtoTest {
     }
 
     @Test
-    public void shouldConvertFromModelWithoutHttpStatus() {
+    public void shouldConvertFromModelWithoutHttpStatus() throws JSONException {
         // given
         final Endpoint endpoint = Fixture.from(Endpoint.class).gimme(EndpointTemplate.VALID_FULL);
         final String expectedJson = "{\n" +
@@ -120,7 +121,7 @@ public class EndpointDtoTest {
     }
 
     @Test
-    public void shouldConvertFromModelWithList() {
+    public void shouldConvertFromModelWithList() throws JSONException {
         // given
         final Endpoint endpoint = Fixture.from(Endpoint.class).gimme(EndpointTemplate.VALID_WITH_LIST);
         final String expectedJson = "{\n" +
