@@ -12,14 +12,14 @@ Quando uma request é feita é seguido o seguinte fluxo:
 
 ## Requisitos
 * Java JDK 8
-* Maven 3
+* Gradle 4
 
 ## Run
 
 ## Usando seu arquivo de propriedades
 Crie seu arquivo de propriedade `src/main/resources/application-custom.yml` e rode com o argumento `-Dspring.profiles.active=custom`. Exemplo:
 ```
-mvn spring-boot:run -Dspring.profiles.active=custom
+gradle bootRun -Dspring.profiles.active=custom
 ```
 
 ## TODO
