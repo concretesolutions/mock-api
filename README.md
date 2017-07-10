@@ -12,14 +12,14 @@ Quando uma request é feita é seguido o seguinte fluxo:
 
 ## Requisitos
 * Java JDK 8
-* Maven 3
+* Gradle 4
 
 ## Run
 
 ## Usando seu arquivo de propriedades
 Crie seu arquivo de propriedade `src/main/resources/application-custom.yml` e rode com o argumento `-Dspring.profiles.active=custom`. Exemplo:
 ```
-mvn spring-boot:run -Dspring.profiles.active=custom
+gradle bootRun -Dspring.profiles.active=custom
 ```
 
 ## TODO
@@ -30,4 +30,3 @@ mvn spring-boot:run -Dspring.profiles.active=custom
 * Adcionar plugin do FindBugs
 * Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
 * Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`
-* Atualizar versão do Spring Boot

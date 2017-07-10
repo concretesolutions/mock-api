@@ -4,6 +4,7 @@ import br.com.concrete.mock.generic.mapper.HeaderMapper;
 import br.com.concrete.mock.generic.mapper.QueryMapper;
 import br.com.concrete.mock.generic.model.Request;
 import com.google.common.collect.ImmutableMap;
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -114,7 +115,7 @@ public class RequestMapperTest {
     }
 
     @Test
-    public void shouldMapRequestWithBody() throws URISyntaxException {
+    public void shouldMapRequestWithBody() throws URISyntaxException, JSONException {
         // given
         final MockHttpServletRequest httpServletRequest = new MockHttpServletRequest();
 

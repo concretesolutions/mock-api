@@ -1,15 +1,9 @@
 package br.com.concrete.mock.generic.api.v1.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Optional;
-
+import br.com.concrete.mock.generic.mapper.EndpointDto;
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,18 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.Optional;
 
-import br.com.concrete.mock.generic.mapper.EndpointDto;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -61,16 +55,16 @@ public class GenericApiControllerExternalIntegrationTest {
 	}
 
 	@Test(timeout = 10000)
-	public void shouldResolvePostWithExternalMock() throws IOException {
+	public void shouldResolvePostWithExternalMock() throws IOException, JSONException {
 		shouldResolveWithExternalMock(HttpMethod.POST);
 	}
 
 	@Test(timeout = 5000)
-	public void shouldResolvePathWithExternalMock() throws IOException {
+	public void shouldResolvePathWithExternalMock() throws IOException, JSONException {
 		shouldResolveWithExternalMock(HttpMethod.PATCH);
 	}
 
-	private void shouldResolveWithExternalMock(final HttpMethod httpMethod) throws IOException {
+	private void shouldResolveWithExternalMock(final HttpMethod httpMethod) throws IOException, JSONException {
 		final ImmutableMap<String, String> headers = ImmutableMap.<String, String>builder()
 				.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
 
@@ -78,7 +72,7 @@ public class GenericApiControllerExternalIntegrationTest {
 	}
 
 	private void shouldResolveWithExternalMock(final HttpMethod httpMethod, final Optional<Map<String, String>> headers)
-			throws IOException {
+			throws IOException, JSONException {
 		// given
 		final String url = "/v2/57fbd6280f0000ed154fd470";
 

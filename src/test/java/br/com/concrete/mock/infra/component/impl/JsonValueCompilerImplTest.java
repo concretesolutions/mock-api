@@ -1,5 +1,6 @@
 package br.com.concrete.mock.infra.component.impl;
 
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,7 +17,7 @@ public class JsonValueCompilerImplTest {
     private JsonValueCompilerImpl jsonValueCompiler;
 
     @Test
-    public void shouldBeEqualWhenNotExistVariables() {
+    public void shouldBeEqualWhenNotExistVariables() throws JSONException {
         // given
         final String jsonWithValue = "{ \"id\": \"first\", \"name\": \"Paul\" }";
 
@@ -28,7 +29,7 @@ public class JsonValueCompilerImplTest {
     }
 
     @Test
-    public void shouldCompileVariable3daysAgo() {
+    public void shouldCompileVariable3daysAgo() throws JSONException {
         // given
         final String format = "YYYY/MM/dd";
         final String jsonWithValue = "{ \"date1\": \"#{{3daysAgo:" + format + "}}\", \"name\": \"Paul\" }";
@@ -43,7 +44,7 @@ public class JsonValueCompilerImplTest {
     }
 
     @Test
-    public void shouldCompileVariable3daysAgoRepeated() {
+    public void shouldCompileVariable3daysAgoRepeated() throws JSONException {
         // given
         final String format = "YYYY/MM/dd";
         final String jsonWithValue = "{ \"date1\": \"#{{3daysAgo:" + format + "}}\", \"date2\": \"#{{3daysAgo:" + format + "}}\", \"name\": \"Paul\" }";
@@ -58,7 +59,7 @@ public class JsonValueCompilerImplTest {
     }
 
     @Test
-    public void shouldCompileVariableNdaysAgo() {
+    public void shouldCompileVariableNdaysAgo() throws JSONException {
         // given
         final String format = "YYYY/MM/dd";
         final String jsonWithValue = "{ \"date1\": \"#{{3daysAgo:" + format + "}}\", \"date2\": \"#{{3daysAgo:" + format + "}}\", \"date3\": \"#{{7daysAgo:" + format + "}}\", \"date4\": \"#{{8daysAgo:" + format + "}}\", \"name\": \"Paul\" }";
