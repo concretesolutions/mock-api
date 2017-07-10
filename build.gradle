@@ -39,3 +39,8 @@ dependencies {
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'br.com.six2six:fixture-factory:3.1.0'
 }
+
+bootRun {
+    String activeProfile =  System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
+}
