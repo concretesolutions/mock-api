@@ -30,4 +30,3 @@ gradle bootRun -Dspring.profiles.active=custom
 * Adcionar plugin do FindBugs
 * Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
 * Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`
-* Atualizar versão do Spring Boot
