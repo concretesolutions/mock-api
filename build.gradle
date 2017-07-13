@@ -25,6 +25,7 @@ repositories {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter'
     compile 'org.springframework.boot:spring-boot-starter-undertow'
+    compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-hateoas'
     compile 'com.google.code.gson:gson'
     compile 'javax.ws.rs:javax.ws.rs-api:2.0'
