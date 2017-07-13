@@ -23,15 +23,12 @@ repositories {
 
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter', {
-        exclude module: 'org.apache.httpcomponents:httpclient'
-    })
+    compile 'org.springframework.boot:spring-boot-starter'
     compile 'org.springframework.boot:spring-boot-starter-undertow'
     compile 'org.springframework.boot:spring-boot-starter-hateoas'
     compile 'com.google.code.gson:gson'
     compile 'javax.ws.rs:javax.ws.rs-api:2.0'
     compile 'net.minidev:json-smart:1.0.8'
-    compile 'org.apache.httpcomponents:httpclient'
     compile 'com.google.guava:guava:22.0'
     compile 'org.modelmapper:modelmapper:0.7.5'
     compile 'commons-io:commons-io:2.5'
