@@ -6,6 +6,8 @@ import br.com.concrete.mock.generic.model.ExternalApiResult;
 import br.com.concrete.mock.generic.model.Request;
 import br.com.concrete.mock.infra.model.UriConfiguration;
 import br.com.concrete.mock.infra.property.ApiProperty;
+import java.util.Optional;
+import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Component
 public class ExternalApi {
@@ -69,22 +68,9 @@ public class ExternalApi {
                 .concat(parameters);
 
         LOGGER.info("URL => {}", url);
-        ResponseEntity<String> apiResult = null;
-        try {
-            apiResult = restTemplate.exchange(url, HttpMethod.valueOf(request.getMethod().name().toUpperCase()), entity,
-                    String.class);
-            return Optional.of(new ExternalApiResult(apiResult, uriConfiguration));
-        } catch (Exception e) {
-            LOGGER.error("Erro chamada API " + HttpMethod.valueOf(request.getMethod().name().toUpperCase()) + " " + url,
-                    e);
-
-            LOGGER.error("Tentando mais uma vez " + HttpMethod.valueOf(request.getMethod().name().toUpperCase()) + " "
-                    + url);
-        }
-        // }
-
-        return Optional.empty();
-
+        final ResponseEntity<String> apiResult = restTemplate.exchange(url, HttpMethod.valueOf(request.getMethod().name().toUpperCase()), entity,
+                String.class);
+        return Optional.of(new ExternalApiResult(apiResult, uriConfiguration));
     }
 
 }
