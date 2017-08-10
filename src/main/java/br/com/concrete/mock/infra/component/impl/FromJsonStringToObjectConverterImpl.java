@@ -1,6 +1,7 @@
 package br.com.concrete.mock.infra.component.impl;
 
 import br.com.concrete.mock.infra.component.FromJsonStringToObjectConverter;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ public class FromJsonStringToObjectConverterImpl implements FromJsonStringToObje
     private static final JsonParser JSON_PARSER = new JsonParser();
 
     @Override
-    public Object apply(final Optional<String> json) {
+    public JsonElement apply(final Optional<String> json) {
         return json
                 .map(JSON_PARSER::parse)
                 .filter(jsonElement -> !jsonElement.isJsonNull())
@@ -20,7 +21,7 @@ public class FromJsonStringToObjectConverterImpl implements FromJsonStringToObje
                         jsonElement.getAsJsonObject() :
                         jsonElement.getAsJsonArray()
                 )
-                .orElse(JSON_PARSER.parse("").getAsJsonNull());
+                .orElse(JSON_PARSER.parse(""));
     }
 
 }

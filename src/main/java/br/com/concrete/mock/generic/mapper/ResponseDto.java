@@ -6,6 +6,7 @@ import br.com.concrete.mock.infra.exception.impl.ApiApplicationException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
@@ -15,11 +16,11 @@ public class ResponseDto implements Serializable {
 
     private static final Gson GSON = new Gson();
 
-    private final Object body;
+    private final JsonElement body;
     private final Integer httpStatus;
 
     @JsonCreator
-    public ResponseDto(@JsonProperty("body") Object body, @JsonProperty("httpStatus") Integer httpStatus) {
+    public ResponseDto(@JsonProperty("body") JsonElement body, @JsonProperty("httpStatus") Integer httpStatus) {
         this.body = body;
         this.httpStatus = httpStatus;
     }
