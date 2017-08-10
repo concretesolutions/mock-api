@@ -5,6 +5,7 @@ import br.com.concrete.mock.infra.component.FromJsonStringToObjectConverter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,10 +19,10 @@ public class RequestDto implements Serializable {
 
     private final HttpHeaders headers;
     private final Map<String, String> query;
-    private final Object body;
+    private final JsonElement body;
 
     @JsonCreator
-    public RequestDto(@JsonProperty("headers") HttpHeaders headers, @JsonProperty("query") Map<String, String> query, @JsonProperty("body") Object body) {
+    public RequestDto(@JsonProperty("headers") HttpHeaders headers, @JsonProperty("query") Map<String, String> query, @JsonProperty("body") JsonElement body) {
         this.headers = headers;
         this.query = query;
         this.body = body;
