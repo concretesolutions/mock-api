@@ -1,10 +1,12 @@
 package br.com.concrete.mock.infra.component;
 
+import com.google.gson.JsonElement;
+
 import java.util.Optional;
 
 @FunctionalInterface
 public interface FromJsonStringToObjectConverter {
 
-    Object apply(final Optional<String> json);
+    JsonElement apply(final Optional<String> json);
 
 }
