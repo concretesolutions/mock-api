@@ -20,8 +20,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -47,7 +49,9 @@ public class EndpointRepositoryModelTest {
     private BaseFileNameBuilderModel baseFileNameBuilder;
     @Mock
     private EndpointFileFilterRequest endpointMockFileFilterRequest;
-    private URL resource;
+
+    private File resource;
+
     @Value("${file.base}")
     private String fileBase;
     @Value("${file.extension}")
@@ -59,14 +63,13 @@ public class EndpointRepositoryModelTest {
     }
 
     @Before
-    public void init() {
-        this.resource = getClass().getClassLoader().getResource(fileBase.concat(NAME));
+    public void init() throws URISyntaxException {
+        this.resource = Paths.get(getClass().getClassLoader().getResource(fileBase).toURI()).toFile();
     }
 
     @Test
     public void shouldFileExistsInTest() {
         assertNotNull(resource);
-        assertNotNull(resource.getFile());
     }
 
     @Test
@@ -74,7 +77,7 @@ public class EndpointRepositoryModelTest {
         // given
         final RequestMethod requestMethod = RequestMethod.GET;
         final String requestUrl = "person/11";
-        final String basePath = resource.getFile() + requestUrl;
+        final String basePath = Paths.get(resource.getAbsolutePath(), requestMethod.toString(), requestUrl).toAbsolutePath().toString();
         final Optional<Endpoint> endpoint = Optional.of(Fixture.from(Endpoint.class).gimme(EndpointTemplate.VALID));
 
         // when
@@ -94,7 +97,7 @@ public class EndpointRepositoryModelTest {
         // given
         final RequestMethod requestMethod = RequestMethod.GET;
         final String requestUrl = "/person/66";
-        final String basePath = resource.getFile() + requestUrl;
+        final String basePath = Paths.get(resource.getAbsolutePath(), requestUrl).toAbsolutePath().toString();
 
         // when
         when(baseFileNameBuilder.buildPath(any(), any())).thenReturn(basePath);
@@ -110,7 +113,7 @@ public class EndpointRepositoryModelTest {
     public void shouldFilterByMethodAndUriAndQuery() {
         // given
         final String requestUrl = "person/11";
-        final String basePath = resource.getFile() + requestUrl;
+        final String basePath = Paths.get(resource.getAbsolutePath(), requestUrl).toAbsolutePath().toString();
         final Optional<Endpoint> result = Optional.empty();
 
         // when

@@ -17,7 +17,9 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,17 +43,16 @@ public class GenericApiControllerIntegrationTest {
     @Value("${file.base}")
     private String fileBase;
 
-    private URL resource;
+    private File resource;
 
     @Before
-    public void init() {
-        this.resource = getClass().getClassLoader().getResource(fileBase.concat("/"));
+    public void init() throws URISyntaxException {
+        this.resource = Paths.get(getClass().getClassLoader().getResource(fileBase).toURI()).toFile();
     }
 
     @Test
     public void shouldFileExistsInTest() {
         assertNotNull(resource);
-        assertNotNull(resource.getFile());
     }
 
     private String getJson(String fileNameExpected) throws IOException {
@@ -61,7 +62,9 @@ public class GenericApiControllerIntegrationTest {
 
     private void shouldResolveGetWithLocalMockMatchQueryCaseX(String uri, String caseX) throws IOException, JSONException {
         // given
-        final String fileName = resource.getFile().concat("get").concat(uri).concat("/").concat(caseX).concat(fileExtension);
+        final String fileName =
+                Paths.get(resource.getAbsolutePath(), "get", uri, caseX + fileExtension)
+                .toAbsolutePath().toString();
 
         final String endpointJson = getJson(fileName);
 
@@ -89,7 +92,9 @@ public class GenericApiControllerIntegrationTest {
     public void shouldResolveGetWithSimpleResponseWithoutRequest() throws IOException, JSONException {
         // given
         final String uri = "/guests/132/users/21/cc";
-        final String fileName = resource.getFile().concat("get" + uri + "/1" + fileExtension);
+        final String fileName =
+                Paths.get(resource.getAbsolutePath(), "get", uri, "1" + fileExtension)
+                        .toAbsolutePath().toString();
         final String endpointJson = getJson(fileName);
         final EndpointDto endpointDto = new Gson().fromJson(endpointJson, EndpointDto.class);
         final String responseJson = new Gson().toJson(endpointDto.getResponse().getBody());
@@ -107,7 +112,9 @@ public class GenericApiControllerIntegrationTest {
     public void shouldResolveGetWithSimpleResponseWithRequest() throws IOException, JSONException {
         // given
         final String uri = "/guests/132/users/22/cc";
-        final String fileName = resource.getFile().concat("get" + uri + "/1" + fileExtension);
+        final String fileName =
+                Paths.get(resource.getAbsolutePath(), "get", uri, "1" + fileExtension)
+                        .toAbsolutePath().toString();
         final String endpointJson = getJson(fileName);
         final EndpointDto endpointDto = new Gson().fromJson(endpointJson, EndpointDto.class);
         final String responseJson = new Gson().toJson(endpointDto.getResponse().getBody());
@@ -126,7 +133,9 @@ public class GenericApiControllerIntegrationTest {
         // given
         final String uri = "/users/123";
 
-        final String fileName = resource.getFile().concat("get").concat(uri).concat("/1").concat(fileExtension);
+        final String fileName =
+                Paths.get(resource.getAbsolutePath(), "get", uri, "1" + fileExtension)
+                        .toAbsolutePath().toString();
         final EndpointDto endpointDto = new Gson().fromJson(getJson(fileName), EndpointDto.class);
         final String responseJson = new Gson().toJson(endpointDto.getResponse().getBody());
 
@@ -143,7 +152,9 @@ public class GenericApiControllerIntegrationTest {
         // given
         final String uri = "/users/123";
 
-        final String fileName = resource.getFile().concat("get").concat(uri).concat("/2").concat(fileExtension);
+        final String fileName =
+                Paths.get(resource.getAbsolutePath(), "get", uri, "2" + fileExtension)
+                        .toAbsolutePath().toString();
         final EndpointDto endpointDto = new Gson().fromJson(getJson(fileName), EndpointDto.class);
         final String responseJson = new Gson().toJson(endpointDto.getResponse().getBody());
         final String query = queryStringBuilder.fromMap(endpointDto.getRequest().getQuery());
@@ -183,7 +194,9 @@ public class GenericApiControllerIntegrationTest {
 
     private void shouldResolveWithLocalMockMatcheRequest(final String uri, final String caseX, final HttpStatus httpStatus, HttpMethod httpMethod) throws IOException, JSONException {
         // given
-        final String fileName = resource.getFile().concat(httpMethod.name().toLowerCase()).concat(uri).concat("/").concat(caseX).concat(fileExtension);
+        final String fileName =
+                Paths.get(resource.getAbsolutePath(), httpMethod.name().toLowerCase(), uri, caseX + fileExtension)
+                        .toAbsolutePath().toString();
 
         final EndpointDto endpointDto = new Gson().fromJson(getJson(fileName), EndpointDto.class);
         final String requestJson = new Gson().toJson(endpointDto.getRequest().getBody());
