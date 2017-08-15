@@ -41,7 +41,7 @@ public class EndpointDtoTest {
     @Test
     public void shouldConvertResponse() {
         // given
-        final String json = "{\"request\":{\"body\":[{\"run\":\"7\"}]},\"response\":{\"body\":[{\"age\":8.0}]}}";
+        final String json = "{\"request\":{\"body\":[{\"run\":\"7\"}]},\"response\":{\"body\":[{\"age\":8}]}}";
 
         // when
         final EndpointDto endpointDto = new Gson().fromJson(json, EndpointDto.class);
@@ -51,7 +51,7 @@ public class EndpointDtoTest {
         assertNotNull(endpoint);
         assertNotNull(endpoint.getResponse());
         assertNotNull(endpoint.getResponse().getBody());
-        assertEquals("[{\"age\":8.0}]", endpoint.getResponse().getBody());
+        assertEquals("[{\"age\":8}]", endpoint.getResponse().getBody());
     }
 
     @Test

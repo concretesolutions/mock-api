@@ -39,7 +39,7 @@ public class ResponseDtoTest {
     @Test
     public void shouldConvertFromJsonAListOfObjects() {
         // given
-        final String json = "{ \"body\": [{ \"age\": 10.0 }, { \"age\": 11.0 }] }";
+        final String json = "{ \"body\": [{ \"age\": 10 }, { \"age\": 11 }] }";
 
         // when
         final ResponseDto responseDto = new Gson().fromJson(json, ResponseDto.class);
@@ -48,7 +48,7 @@ public class ResponseDtoTest {
         // then
         assertNotNull(response);
         assertNotNull(response.getBody());
-        assertEquals("[{\"age\":10.0},{\"age\":11.0}]", response.getBody());
+        assertEquals("[{\"age\":10},{\"age\":11}]", response.getBody());
     }
 
     @Test
