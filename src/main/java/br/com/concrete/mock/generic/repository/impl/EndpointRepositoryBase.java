@@ -6,7 +6,6 @@ import br.com.concrete.mock.generic.model.Request;
 import br.com.concrete.mock.generic.repository.EndpointRepository;
 import br.com.concrete.mock.infra.component.file.BaseFileNameBuilder;
 import br.com.concrete.mock.infra.property.FileExtensionProperty;
-import br.com.concrete.mock.infra.property.FileProperty;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +26,12 @@ public class EndpointRepositoryBase implements EndpointRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EndpointRepositoryBase.class);
 
-    private final FileProperty fileProperty;
     private final FileExtensionProperty fileExtensionProperty;
     private final EndpointMapper endpointMapper;
     private final BaseFileNameBuilder baseFileNameBuilder;
     private final EndpointFileFilterRequest endpointFileFilterRequest;
 
-    public EndpointRepositoryBase(FileProperty fileProperty, FileExtensionProperty fileExtensionProperty, EndpointMapper endpointMapper, BaseFileNameBuilder baseFileNameBuilder, EndpointFileFilterRequest endpointFileFilterRequest) {
-        this.fileProperty = fileProperty;
+    public EndpointRepositoryBase(FileExtensionProperty fileExtensionProperty, EndpointMapper endpointMapper, BaseFileNameBuilder baseFileNameBuilder, EndpointFileFilterRequest endpointFileFilterRequest) {
         this.fileExtensionProperty = fileExtensionProperty;
         this.endpointMapper = endpointMapper;
         this.baseFileNameBuilder = baseFileNameBuilder;

@@ -12,14 +12,14 @@ public class BaseFileNameBuilderBase implements BaseFileNameBuilder {
     }
 
     public String buildPath(RequestMethod requestMethod, String pathUri) {
-        return buildPath(fileProperty.getFileBase(), requestMethod.name().toLowerCase(), pathUri);
+        return buildPath(fileProperty.getFileBase(), requestMethod.name(), pathUri);
     }
 
     public String buildPath(String fileBaseName, String methodName, String pathUri) {
         return new StringBuilder()
                 .append(fileBaseName)
                 .append("/")
-                .append(methodName)
+                .append(methodName.toLowerCase())
                 .append(pathUri)
                 .toString();
     }
