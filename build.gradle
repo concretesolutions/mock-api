@@ -13,6 +13,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'jacoco'
 
 version = '4.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
@@ -42,4 +43,16 @@ dependencies {
 bootRun {
     String activeProfile =  System.properties['spring.profiles.active']
     systemProperty "spring.profiles.active", activeProfile
+}
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    sourceSets sourceSets.main
+    reports {
+        xml.enabled true
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        html.enabled false
+        csv.enabled false
+    }
 }
