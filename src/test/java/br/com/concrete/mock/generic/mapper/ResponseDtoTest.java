@@ -39,7 +39,7 @@ public class ResponseDtoTest {
     @Test
     public void shouldConvertFromJsonAListOfObjects() {
         // given
-        final String json = "{ \"body\": [{ \"age\": 10 }, { \"age\": 11 }] }";
+        final String json = "{ \"body\": [{ \"age\": 10.0 }, { \"age\": 11.0 }] }";
 
         // when
         final ResponseDto responseDto = new Gson().fromJson(json, ResponseDto.class);

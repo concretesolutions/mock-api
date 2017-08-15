@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/concretesolutions/mock-api.svg?branch=master)](https://travis-ci.org/concretesolutions/mock-api)
+[![codecov.io](https://codecov.io/github/concretesolutions/mock-api/coverage.svg?branch=master)](https://codecov.io/github/concretesolutions/mock-api?branch=master)
+
 # Mock API
 
 App criado para fazer mock com REST utilizando JSON
