@@ -15,8 +15,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -29,76 +30,76 @@ import static org.junit.Assert.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GenericApiControllerExternalIntegrationTest {
 
-	@Autowired
-	private TestRestTemplate restTemplate;
+    @Autowired
+    private TestRestTemplate restTemplate;
 
-	@Value("${file.base}")
-	private String fileBase;
-	@Value("${file.extension}")
-	private String fileExtension;
+    @Value("${file.base}")
+    private String fileBase;
+    @Value("${file.extension}")
+    private String fileExtension;
 
-	private URL resource;
+    private File resource;
 
-	@Before
-	public void init() {
-		this.resource = getClass().getClassLoader().getResource(fileBase);
-	}
+    @Before
+    public void init() throws URISyntaxException {
+        this.resource = Paths.get(getClass().getClassLoader().getResource(fileBase).toURI()).toFile();
+    }
 
-	@Test
-	public void shouldFileExistsInTest() {
-		assertNotNull(resource);
-		assertNotNull(resource.getFile());
-	}
+    @Test
+    public void shouldFileExistsInTest() {
+        assertNotNull(resource);
+    }
 
-	private String getJson(String fileNameExpected) throws IOException {
-		return new String(Files.readAllBytes(Paths.get(fileNameExpected)));
-	}
+    private String getJson(String fileNameExpected) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(fileNameExpected)));
+    }
 
-	@Test(timeout = 10000)
-	public void shouldResolvePostWithExternalMock() throws IOException, JSONException {
-		shouldResolveWithExternalMock(HttpMethod.POST);
-	}
+    @Test(timeout = 10000)
+    public void shouldResolvePostWithExternalMock() throws IOException, JSONException {
+        shouldResolveWithExternalMock(HttpMethod.POST);
+    }
 
-	@Test(timeout = 5000)
-	public void shouldResolvePathWithExternalMock() throws IOException, JSONException {
-		shouldResolveWithExternalMock(HttpMethod.PATCH);
-	}
+    @Test(timeout = 5000)
+    public void shouldResolvePathWithExternalMock() throws IOException, JSONException {
+        shouldResolveWithExternalMock(HttpMethod.PATCH);
+    }
 
-	private void shouldResolveWithExternalMock(final HttpMethod httpMethod) throws IOException, JSONException {
-		final ImmutableMap<String, String> headers = ImmutableMap.<String, String>builder()
-				.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
+    private void shouldResolveWithExternalMock(final HttpMethod httpMethod) throws IOException, JSONException {
+        final ImmutableMap<String, String> headers = ImmutableMap.<String, String>builder()
+                .put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
 
-		shouldResolveWithExternalMock(httpMethod, Optional.of(headers));
-	}
+        shouldResolveWithExternalMock(httpMethod, Optional.of(headers));
+    }
 
-	private void shouldResolveWithExternalMock(final HttpMethod httpMethod, final Optional<Map<String, String>> headers)
-			throws IOException, JSONException {
-		// given
-		final String url = "/v2/57fbd6280f0000ed154fd470";
+    private void shouldResolveWithExternalMock(final HttpMethod httpMethod, final Optional<Map<String, String>> headers)
+            throws IOException, JSONException {
+        // given
+        final String url = "/v2/57fbd6280f0000ed154fd470";
 
-		final HttpStatus httpStatus = HttpStatus.OK;
-		final String fileName = resource.getFile().concat("/").concat(httpMethod.name().toLowerCase()).concat(url)
-				.concat("/1").concat(fileExtension);
+        final HttpStatus httpStatus = HttpStatus.OK;
+        final String fileName =
+                Paths.get(resource.getAbsolutePath(), httpMethod.name().toLowerCase(), url, "1" + fileExtension)
+                        .toAbsolutePath().toString();
 
-		final EndpointDto endpointDto = new Gson().fromJson(getJson(fileName), EndpointDto.class);
-		final String requestJson = new Gson().toJson(endpointDto.getRequest().getBody());
-		final String responseJson = new Gson().toJson(endpointDto.getResponse().getBody());
+        final EndpointDto endpointDto = new Gson().fromJson(getJson(fileName), EndpointDto.class);
+        final String requestJson = new Gson().toJson(endpointDto.getRequest().getBody());
+        final String responseJson = new Gson().toJson(endpointDto.getResponse().getBody());
 
-		final HttpHeaders httpHeaders = headers.filter(mapHeaders -> !mapHeaders.isEmpty()).map(map -> {
-			final HttpHeaders result = new HttpHeaders();
-			result.setContentType(MediaType.APPLICATION_JSON);
-			return result;
-		}).orElse(null);
+        final HttpHeaders httpHeaders = headers.filter(mapHeaders -> !mapHeaders.isEmpty()).map(map -> {
+            final HttpHeaders result = new HttpHeaders();
+            result.setContentType(MediaType.APPLICATION_JSON);
+            return result;
+        }).orElse(null);
 
-		final HttpEntity<String> httpEntity = new HttpEntity<>(requestJson, httpHeaders);
+        final HttpEntity<String> httpEntity = new HttpEntity<>(requestJson, httpHeaders);
 
-		// when
-		final ResponseEntity<String> response = restTemplate.exchange(url, httpMethod, httpEntity, String.class);
+        // when
+        final ResponseEntity<String> response = restTemplate.exchange(url, httpMethod, httpEntity, String.class);
 
-		// then
-		assertEquals(httpStatus, response.getStatusCode());
-		JSONAssert.assertEquals(responseJson, response.getBody(), false);
-		assertNotNull(response.getHeaders().get("Access-Control-Allow-Origin"));
-	}
+        // then
+        assertEquals(httpStatus, response.getStatusCode());
+        JSONAssert.assertEquals(responseJson, response.getBody(), false);
+        assertNotNull(response.getHeaders().get("Access-Control-Allow-Origin"));
+    }
 
 }
