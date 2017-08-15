@@ -48,7 +48,7 @@ public class ResponseDtoTest {
         // then
         assertNotNull(response);
         assertNotNull(response.getBody());
-        assertEquals("[{\"age\":10.0},{\"age\":11.0}]", response.getBody());
+        assertEquals("[{\"age\":10},{\"age\":11}]", response.getBody());
     }
 
     @Test

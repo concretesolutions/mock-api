@@ -15,6 +15,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -36,22 +37,9 @@ public class FileNameGeneratorImplTest {
 
     @Before
     public void init() throws IOException {
-        path = Optional
-                .ofNullable(getClass().getClassLoader().getResource("mocks-test"))
-                .map(URL::getFile)
-                .map(f -> new File(f, "filenametest"))
-                .map(file -> {
-                    try {
-                        final Path p = Paths.get(file.getAbsolutePath());
-                        FileUtils.deleteDirectory(file);
-
-                        return Files.createDirectories(p);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                })
-                .orElse(null);
+        path =
+                Files.createTempDirectory("filenametest")
+                .toAbsolutePath();
     }
 
     @Test

@@ -51,7 +51,7 @@ public class EndpointDtoTest {
         assertNotNull(endpoint);
         assertNotNull(endpoint.getResponse());
         assertNotNull(endpoint.getResponse().getBody());
-        assertEquals("[{\"age\":8.0}]", endpoint.getResponse().getBody());
+        assertEquals("[{\"age\":8}]", endpoint.getResponse().getBody());
     }
 
     @Test
