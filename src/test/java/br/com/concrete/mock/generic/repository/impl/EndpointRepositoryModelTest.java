@@ -77,7 +77,7 @@ public class EndpointRepositoryModelTest {
         // given
         final RequestMethod requestMethod = RequestMethod.GET;
         final String requestUrl = "person/11";
-        final String basePath = Paths.get(resource.getAbsolutePath(), requestMethod.toString(), requestUrl).toAbsolutePath().toString();
+        final String basePath = Paths.get(resource.getAbsolutePath(), requestMethod.toString().toLowerCase(), requestUrl).toAbsolutePath().toString();
         final Optional<Endpoint> endpoint = Optional.of(Fixture.from(Endpoint.class).gimme(EndpointTemplate.VALID));
 
         // when
