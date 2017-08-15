@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/67cdddf44d87495c84e3bddfdb5de074)](https://www.codacy.com/app/jfelipesp/mock-api?utm_source=github.com&utm_medium=referral&utm_content=concretesolutions/mock-api&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/concretesolutions/mock-api.svg?branch=master)](https://travis-ci.org/concretesolutions/mock-api)
 [![codecov.io](https://codecov.io/github/concretesolutions/mock-api/coverage.svg?branch=master)](https://codecov.io/github/concretesolutions/mock-api?branch=master)
 
