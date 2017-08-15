@@ -39,11 +39,6 @@ import static org.mockito.Mockito.when;
 public class EndpointBackupServiceFileTest {
     private static final String BACKUP_TEMP = "backup-temp/";
 
-    @BeforeClass
-    public static void initClass() {
-        FixtureFactoryLoader.loadTemplates("br.com.concrete.mock.generic.model.template");
-    }
-
     @InjectMocks
     private EndpointBackupServiceFile endpointBackupServiceFile;
 
@@ -61,6 +56,11 @@ public class EndpointBackupServiceFileTest {
     private JsonFormatterPretty jsonFormatterPretty;
     @Mock
     private EndpointRepository endpointRepository;
+
+    @BeforeClass
+    public static void initClass() {
+        FixtureFactoryLoader.loadTemplates("br.com.concrete.mock.generic.model.template");
+    }
 
     @Test
     public void shouldDoBackup() throws IOException {
