@@ -34,11 +34,6 @@ public class EndpointBackupServiceFileIntegrarionTest {
 
     private static final String CONFIGURATION_CAPTURE_STATE = "/configuration/capture-state";
 
-    @BeforeClass
-    public static void initClass() {
-        FixtureFactoryLoader.loadTemplates("br.com.concrete.mock.generic.model.template");
-    }
-
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -60,6 +55,11 @@ public class EndpointBackupServiceFileIntegrarionTest {
     private String baseName;
     private String fileName;
     private URL resource;
+
+    @BeforeClass
+    public static void initClass() {
+        FixtureFactoryLoader.loadTemplates("br.com.concrete.mock.generic.model.template");
+    }
 
     @Before
     public void init() throws IOException {
