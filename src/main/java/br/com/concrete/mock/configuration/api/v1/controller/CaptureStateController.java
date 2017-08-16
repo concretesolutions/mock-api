@@ -29,7 +29,7 @@ public class CaptureStateController {
     }
 
     @Bean
-    CommandLineRunner init() {
+    private CommandLineRunner init() {
         return args -> {
             LOGGER.info("Application capture state: " + captureState);
             if(captureState) {
