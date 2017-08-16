@@ -9,6 +9,7 @@ import com.google.gson.JsonParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,13 +52,19 @@ public class GenericApiController {
             LOGGER.warn("cannot print json: " + jsonString);
         }
     }
-
     private ResponseEntity<?> interceptRequestAnyMedia(final HttpServletRequest request,
                                                        final Optional<Object> requestBody) {
         logRequest(request, requestBody);
 
-        final Optional<ResponseEntity<String>> responseEntity = genericApiService
-                .genericResponseEntity(requestMapper.mapper(request, requestBody));
+        Optional<ResponseEntity<String>> responseEntity;
+        if((request.getMethod().equalsIgnoreCase(HttpMethod.GET.name()))&&
+                (request.getQueryString() != null)){
+            responseEntity = genericApiService
+                    .genericResponseEntityGET(requestMapper.mapper(request, requestBody), request);
+        }else {
+            responseEntity = genericApiService
+                    .genericResponseEntity(requestMapper.mapper(request, requestBody));
+        }
 
         final ResponseEntity<String> result = responseEntity
                 .map(r -> {
