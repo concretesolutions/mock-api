@@ -6,17 +6,25 @@ import br.com.concrete.mock.generic.model.ExternalApiResult;
 import br.com.concrete.mock.generic.model.Request;
 import br.com.concrete.mock.infra.model.UriConfiguration;
 import br.com.concrete.mock.infra.property.ApiProperty;
-import java.util.Optional;
-import java.util.regex.Pattern;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Component
 public class ExternalApi {
@@ -28,15 +36,17 @@ public class ExternalApi {
     private final RestTemplate restTemplate;
     private final HeaderFilter headerFilter;
     private final CaptureStateRepository captureStateRepository;
+    private final OkHttpClient okHttpClient;
 
     @Autowired
     public ExternalApi(ApiProperty apiProperty, QueryStringBuilder queryStringBuilder, RestTemplate restTemplate,
-                       HeaderFilter headerFilter, CaptureStateRepository captureStateRepository) {
+                       HeaderFilter headerFilter, CaptureStateRepository captureStateRepository, OkHttpClient okHttpClient) {
         this.apiProperty = apiProperty;
         this.queryStringBuilder = queryStringBuilder;
         this.restTemplate = restTemplate;
         this.headerFilter = headerFilter;
         this.captureStateRepository = captureStateRepository;
+        this.okHttpClient = okHttpClient;
     }
 
     public Optional<ExternalApiResult> execute(final Request request) {
@@ -70,6 +80,42 @@ public class ExternalApi {
         LOGGER.info("URL => {}", url);
         final ResponseEntity<String> apiResult = restTemplate.exchange(url, HttpMethod.valueOf(request.getMethod().name().toUpperCase()), entity,
                 String.class);
+        return Optional.of(new ExternalApiResult(apiResult, uriConfiguration));
+    }
+
+    public Optional<ExternalApiResult> okHttpClientRequest(HttpServletRequest request, Request req){
+
+        final Boolean state = captureStateRepository
+                .getCurrent()
+                .map(CaptureState::isEnabled)
+                .orElse(true);
+
+        Enumeration<String> headerNames = request.getHeaderNames();
+        Headers.Builder builder = new Headers.Builder();
+        while (headerNames.hasMoreElements()) {
+            final String name = headerNames.nextElement();
+            builder.add(name, request.getHeader(name));
+        }
+        Headers h = builder.build();
+
+        final UriConfiguration uriConfiguration = apiProperty
+                .getConfiguration(req.getUri())
+                .orElse(new UriConfiguration(apiProperty.getHost(), Pattern.compile(".*"), state));
+
+        okhttp3.Request okHttpRequest = new okhttp3.Request.Builder()
+                .url(uriConfiguration.getHost()+req.getUri()+"?"+request.getQueryString())
+                .get()
+                .headers(h)
+                .build();
+
+        ResponseEntity<String> apiResult = null;
+        try {
+            Response response = okHttpClient.newCall(okHttpRequest).execute();
+            apiResult = new ResponseEntity<>(response.body().string(), new HttpHeaders(), HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return Optional.of(new ExternalApiResult(apiResult, uriConfiguration));
     }
 
