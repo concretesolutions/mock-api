@@ -19,7 +19,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -68,14 +71,27 @@ public class EndpointBackupServiceFile implements EndpointBackupService {
         final EndpointDto endpointDto = new EndpointDto(endpoint, fromJsonStringToObjectConverter);
         final String endpointJson = jsonFormatterPretty.format(new Gson().toJson(endpointDto));
 
+        FileOutputStream output = null;
+        OutputStreamWriter writer = null;
         try {
+            output = new FileOutputStream(Paths.get(fileName).toString());
+            writer = new OutputStreamWriter(output, StandardCharsets.UTF_8);
             Files.createDirectories(Paths.get(pathName));
-            Files.write(Paths.get(fileName), endpointJson.getBytes());
-
+            writer.write(endpointJson);
             LOGGER.info("Backup into " + fileName);
         } catch (IOException e) {
             LOGGER.error("Cannot backup endpoint {}", e);
+        } finally {
+            try {
+                if (output != null)
+                    output.close();
+                if (writer != null)
+                    writer.close();
+            } catch (IOException ex) {
+                LOGGER.error("Error closing streams {}", ex);
+            }
         }
+
         return true;
     }
 

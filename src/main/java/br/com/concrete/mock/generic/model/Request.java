@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Request implements Comparable<Request> {
@@ -98,6 +99,23 @@ public class Request implements Comparable<Request> {
         } else {
             return resultMethod;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Request request = (Request) o;
+        return method == request.method &&
+                Objects.equals(uri, request.uri) &&
+                Objects.equals(headers, request.headers) &&
+                Objects.equals(query, request.query) &&
+                Objects.equals(body, request.body);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(method, uri, headers, query, body);
     }
 
     public static class Builder {
