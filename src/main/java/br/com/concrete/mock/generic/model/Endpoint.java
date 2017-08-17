@@ -99,12 +99,12 @@ public class Endpoint implements Comparable<Endpoint> {
 			return withRequest(new Request.Builder(this.request).withQuery(requestQuery).withBody(requestBody).build());
 		}
 
-		Builder withRequest(Request request) {
+		public Builder withRequest(Request request) {
 			this.request = request;
 			return this;
 		}
 
-		Builder withEmptyRequest(RequestMethod method, String url) {
+		public Builder withEmptyRequest(RequestMethod method, String url) {
 			return withRequest(new Request.Builder(method, url).build());
 		}
 
