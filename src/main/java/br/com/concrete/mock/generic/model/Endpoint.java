@@ -1,6 +1,7 @@
 package br.com.concrete.mock.generic.model;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,21 @@ public class Endpoint implements Comparable<Endpoint> {
 		return this.request.compareTo(o.request);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Endpoint endpoint = (Endpoint) o;
+		return Objects.equals(id, endpoint.id) &&
+				Objects.equals(request, endpoint.request) &&
+				Objects.equals(response, endpoint.response);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, request, response);
+	}
+
 	public static class Builder {
 
 		private Optional<String> id;
@@ -83,12 +99,12 @@ public class Endpoint implements Comparable<Endpoint> {
 			return withRequest(new Request.Builder(this.request).withQuery(requestQuery).withBody(requestBody).build());
 		}
 
-		public Builder withRequest(Request request) {
+		Builder withRequest(Request request) {
 			this.request = request;
 			return this;
 		}
 
-		public Builder withEmptyRequest(RequestMethod method, String url) {
+		Builder withEmptyRequest(RequestMethod method, String url) {
 			return withRequest(new Request.Builder(method, url).build());
 		}
 
