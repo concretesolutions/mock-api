@@ -74,7 +74,7 @@ public class EndpointBackupServiceFile implements EndpointBackupService {
         FileOutputStream output = null;
         OutputStreamWriter writer = null;
         try {
-            output = new FileOutputStream(Paths.get(fileName).toString());
+            output = new FileOutputStream(fileName);
             writer = new OutputStreamWriter(output, StandardCharsets.UTF_8);
             Files.createDirectories(Paths.get(pathName));
             writer.write(endpointJson);
