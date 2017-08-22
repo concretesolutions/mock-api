@@ -25,16 +25,14 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(ApplicationExceptionImpl.class)
     @ResponseBody
     public ApplicationExceptionMessage handleBadRequest(ApplicationException e) {
-        final ApplicationExceptionMessage applicationExceptionMessage = e.buildApplicationExceptionMessage();
         LOGGER.error("handleBadRequest", e);
-        return applicationExceptionMessage;
+        return e.buildApplicationExceptionMessage();
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(ErrorApplicationException.class)
     @ResponseBody
     public ApplicationExceptionMessage handleMockError(ErrorApplicationException e) {
-        final ApplicationExceptionMessage applicationExceptionMessage = e.buildApplicationExceptionMessage();
         LOGGER.error("handleMockApiError", e);
         return e.buildApplicationExceptionMessage();
     }
@@ -43,7 +41,6 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(ApiApplicationException.class)
     @ResponseBody
     public ApplicationExceptionMessage handleApiException(ApiApplicationException e) {
-        final ApplicationExceptionMessage applicationExceptionMessage = e.buildApplicationExceptionMessage();
         LOGGER.error("handleApiException", e);
         return e.buildApplicationExceptionMessage();
     }

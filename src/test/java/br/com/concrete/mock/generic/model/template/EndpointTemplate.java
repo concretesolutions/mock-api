@@ -3,25 +3,27 @@ package br.com.concrete.mock.generic.model.template;
 import br.com.concrete.mock.generic.model.Endpoint;
 import br.com.concrete.mock.generic.model.Request;
 import br.com.concrete.mock.generic.model.Response;
-import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
+
+import static br.com.six2six.fixturefactory.Fixture.of;
 
 import java.util.Optional;
 
 public class EndpointTemplate implements TemplateLoader {
 
+    private static final String VALID_WITHOUT_HTTPSTATUS = "validFull";
+    private static final String NOT_VALID = "notValid";
     public static final String VALID = "valid";
     public static final String VALID_FULL = "validFull";
-    public static final String VALID_WITHOUT_HTTPSTATUS = "validFull";
     public static final String VALID_WITH_LIST = "validWithList";
     public static final String VALID_WITH_REQUEST_QUERY_AGE10 = "validWithRequestQueryAge10";
     public static final String VALID_WITH_REQUEST_BODY_ID6 = "validWithRequestBodyId6";
-    public static final String NOT_VALID = "notValid";
+
 
     @Override
     public void load() {
-        Fixture.of(Endpoint.class)
+        of(Endpoint.class)
                 .addTemplate(VALID, new Rule() {{
                     add("id", Optional.empty());
                     add("request", one(Request.class, RequestTemplate.VALID_EMPTY));
