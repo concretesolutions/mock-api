@@ -2,6 +2,9 @@
 [![codecov.io](https://codecov.io/github/concretesolutions/mock-api/coverage.svg?branch=master)](https://codecov.io/github/concretesolutions/mock-api?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/67cdddf44d87495c84e3bddfdb5de074)](https://www.codacy.com/app/concrete/mock-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=concretesolutions/mock-api&amp;utm_campaign=Badge_Grade)
 
+## Coverage History
+![codecov.io](https://codecov.io/github/concretesolutions/mock-api/branch.svg?branch=master)
+
 # Mock API
 
 App criado para fazer mock com REST utilizando JSON
