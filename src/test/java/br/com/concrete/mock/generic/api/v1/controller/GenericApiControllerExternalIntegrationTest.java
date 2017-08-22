@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class GenericApiControllerExternalIntegrationTest {
     }
 
     private String getJson(String fileNameExpected) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(fileNameExpected)));
+        return new String(Files.readAllBytes(Paths.get(fileNameExpected)), StandardCharsets.UTF_8);
     }
 
     @Test(timeout = 10000)

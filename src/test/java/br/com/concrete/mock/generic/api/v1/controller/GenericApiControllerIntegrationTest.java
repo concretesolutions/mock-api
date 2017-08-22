@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,7 +58,7 @@ public class GenericApiControllerIntegrationTest {
 
     private String getJson(String fileNameExpected) throws IOException {
         final Path path = Paths.get(fileNameExpected);
-        return Files.exists(path) ? new String(Files.readAllBytes(path)) : "{}";
+        return Files.exists(path) ? new String(Files.readAllBytes(path), StandardCharsets.UTF_8) : "{}";
     }
 
     private void shouldResolveGetWithLocalMockMatchQueryCaseX(String uri, String caseX) throws IOException, JSONException {
