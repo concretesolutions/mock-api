@@ -1,4 +1,5 @@
 FROM frolvlad/alpine-oraclejdk8:slim
+MAINTAINER "Concrete <cs-chapter-java@concrete.com.br>"
 
 VOLUME /config
 VOLUME /data
