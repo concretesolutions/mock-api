@@ -29,11 +29,32 @@ Crie seu arquivo de propriedade `src/main/resources/application-custom.yml` e ro
 gradle bootRun -Dspring.profiles.active=custom
 ```
 
+## Usando imagem Docker
+Para gerar a imagem Docker do projeto, execute: 
+```
+gradle buildDocker
+```
+
+Por padrão, o nome da imagem será `concretesolutions/mock-api:VERSAO`.
+
+Para rodar a aplicação, crie dois diretórios: um contendo o arquivo de configuração `application-custom.yml` e o outro contendo os arquivos de mock. Execute então:
+
+```
+docker run -d --name mock-api \
+       -p 9090:9090 \
+       -v /path/para/arquivo/application-custom.yml:/config/application.yml \
+       -v /path/para/diretorio/dados/:/data \
+       concretesolutions/mock-api:VERSAO
+```
+
+A porta `9090` expõe o serviço enquanto a porta `5000` é utilizada para debug da aplicação.
+
+Para visualizar os logs da aplicação a partir do container: `docker logs -f mock-api`
+
 ## TODO
-* Adicionar a opção de fazer build com Docker
 * Separar testes unitários dos testes integrados
 * Corrigir os testes ignorados
 * Corrigir Code Style
-* Adcionar plugin do FindBugs
+* Adicionar plugin do FindBugs
 * Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
 * Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`
