@@ -76,6 +76,38 @@ public class GenericApiServiceImpl implements GenericApiService {
         });
     }
 
+    @Override
+    public Optional<ResponseEntity<String>> genericResponseEntityGET(Request request, HttpServletRequest httpServletRequest) {
+        final Endpoint endpointNotSafe = getEndpoint(request).orElse(null);
+
+        final Optional<ResponseEntity<String>> apiResult;
+
+        // TODO refatorar: esta no if porque estava dando problema ao colocar
+        // dentro do orElse()
+        if (endpointNotSafe == null) {
+            apiResult = externalApi.okHttpClientRequest(httpServletRequest, request).map(r -> {
+                captureExecutor.execute(r, new Endpoint.Builder(request, r.getApiResult()).build());
+                return r.getApiResult();
+            });
+        } else {
+            final String body = jsonValueCompiler.compile(endpointNotSafe.getResponse().getBody());
+            apiResult = Optional.of(
+                    new ResponseEntity<>(body, endpointNotSafe.getResponse().getHttpStatus().orElse(HttpStatus.OK)));
+        }
+
+        return apiResult.map(responseEntity -> {
+            final ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(responseEntity.getStatusCode());
+
+            apiProperty.getDefaultHeaders().forEach(header -> {
+                final String headerName = header.getHeaderName();
+                final String[] headerValues = header.getHeaderValues().stream().toArray(String[]::new);
+                bodyBuilder.header(headerName, headerValues);
+            });
+
+            return bodyBuilder.body(responseEntity.getBody());
+        });
+    }
+
     public Map<String, String> getHeaders(final HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
