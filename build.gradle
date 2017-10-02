@@ -36,6 +36,7 @@ dependencies {
     compile 'org.modelmapper:modelmapper:0.7.5'
     compile 'commons-io:commons-io:2.5'
     compile 'org.apache.httpcomponents:httpclient:4.4.1'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'br.com.six2six:fixture-factory:3.1.0'
