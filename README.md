@@ -52,6 +52,7 @@ A porta `9090` expõe o serviço enquanto a porta `5000` é utilizada para debug
 Para visualizar os logs da aplicação a partir do container: `docker logs -f mock-api`
 
 ## TODO
+* Inseriri exemplo do "arquivo de propriedades" no README
 * Separar testes unitários dos testes integrados
 * Corrigir os testes ignorados
 * Corrigir Code Style
