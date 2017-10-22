@@ -62,7 +62,7 @@ task codeCoverageReport(type: JacocoReport) {
 
 task buildDocker(type: Docker, dependsOn: build) {
     push = false
-    applicationName = 'concretesolutions/' + jar.baseName
+    applicationName = 'elemental-source/' + jar.baseName
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
