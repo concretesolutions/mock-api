@@ -18,6 +18,13 @@ apply plugin: 'jacoco'
 apply plugin: 'docker'
 apply plugin: 'findbugs'
 
+findbugs {
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+    effort = "default"
+    reportLevel = "high"
+}
+
 version = '4.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
@@ -38,7 +45,6 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'org.apache.httpcomponents:httpclient:4.4.1'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
-
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'br.com.six2six:fixture-factory:3.1.0'
 }
@@ -72,3 +78,4 @@ task buildDocker(type: Docker, dependsOn: build) {
         }
     }
 }
+
