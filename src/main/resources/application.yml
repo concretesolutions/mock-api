@@ -1,48 +1,54 @@
-# vmoptions: -Dspring.profiles.active=test
-
 server.port: 9090
-
 api:
-  # Requests accept just this headers (optinal property). If property not exists, all headers are accepted
-#  acceptedHeaders:
-#    - "accept"
-#    - "Content-Type"
-
-  # When is not find in repository, then will try to do a request in this host
-  host: "http://www.mocky.io"
-
-  # Default headers to do a request
+  host: "http://api.itau/apiitau" # "http://api-des.itau/"
+  acceptedHeaders:
+    - "execute"
+    - "Content-Type"
   defaultHeaders:
+    -
+      headerName: "Server"
+      headerValues:
+        - "Microsoft-IIS/8.5"
+    -
+      headerName: "X-Powered-By"
+      headerValues:
+        - "Express,ASP.NET"
+    -
+      headerName: "Access-Control-Allow-Headers"
+      headerValues:
+        - "Content-Type"
+    -
+      headerName: "Access-Control-Allow-Methods"
+      headerValues:
+        - "GET,PUT,POST,DELETE,PATCH"
     -
       headerName: "Access-Control-Allow-Origin"
       headerValues:
-        - "Connection"
+        - "*"
+    -
+      headerName: "Connection"
+      headerValues:
         - "Keep-Alive"
     -
       headerName: "Content-Type"
       headerValues:
-        - "application/json;charset=UTF-8"
-
-  # Alternative hosts
-  # When a request uri match with some pattern, than this host will be used
+        - "application/json;charset=utf-8"
   uriConfigurations:
     -
-      host: "http://www.mocky2.io"
-      pattern: "begin-of-uri/|another-pattern/"
-      backup: false
+      host: "http://api.itau/apiitau"
+      pattern: "seguranca/token"
+      backup: true
     -
-      host: "http://www.mocky3.io"
-      pattern: "teste/|test/"
-
-# Paths of json
+      host: "http://api.itau/apiitau"
+      pattern: "v2/pagamento"
+      backup: true
+    -
+      host: "http://api.itau/apiitau"
+      pattern: "^(seguranca|limites_seguranca)\\/"
+      backup: false
 file:
-  # Look for this path to find json with a request
-  base: "${MOCK_API_FILE_BASE}"
+  base: "/home/luis/dev/itau/ws/mobile-teste-integrado/server/fake-api-data"
   extension: ".json"
-  # Save request (cache) in this path
-  backup.path: "${MOCK_BACKUP_FILE_BASE}"
-
-# Initialize app in capture mode. All requests will be saved
+  backup.path: "/home/luis/dev/itau/ws/mobile-teste-integrado/server/fake-api-data-backup"
 captureState: true
-
 debug: true
