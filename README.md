@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.org/concretesolutions/mock-api.svg?branch=master)](https://travis-ci.org/concretesolutions/mock-api)
-[![codecov.io](https://codecov.io/github/concretesolutions/mock-api/coverage.svg?branch=master)](https://codecov.io/github/concretesolutions/mock-api?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/67cdddf44d87495c84e3bddfdb5de074)](https://www.codacy.com/app/concrete/mock-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=concretesolutions/mock-api&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/elemental-source/mock-api.svg?branch=master)](https://travis-ci.org/elemental-source/mock-api)
+[![codecov.io](https://codecov.io/github/elemental-source/mock-api/coverage.svg?branch=master)](https://codecov.io/github/elemental-source/mock-api?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2be4911c74b14b68a37e78ca4c2c8273)](https://www.codacy.com/app/elemental-source/mock-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=elemental-source/mock-api&amp;utm_campaign=Badge_Grade)
 
 ## Coverage History
-![codecov.io](https://codecov.io/github/concretesolutions/mock-api/branch.svg?branch=master)
+![codecov.io](https://codecov.io/github/elemental-source/mock-api/branch.svg?branch=master)
 
 # Mock API
 
@@ -35,7 +35,7 @@ Para gerar a imagem Docker do projeto, execute:
 gradle buildDocker
 ```
 
-Por padrão, o nome da imagem será `concretesolutions/mock-api:VERSAO`.
+Por padrão, o nome da imagem será `elemental-source/mock-api:VERSAO`.
 
 Para rodar a aplicação, crie dois diretórios: um contendo o arquivo de configuração `application-custom.yml` e o outro contendo os arquivos de mock. Execute então:
 
@@ -44,7 +44,7 @@ docker run -d --name mock-api \
        -p 9090:9090 \
        -v /path/para/arquivo/application-custom.yml:/config/application.yml \
        -v /path/para/diretorio/dados/:/data \
-       concretesolutions/mock-api:VERSAO
+       elemental-source/mock-api:VERSAO
 ```
 
 A porta `9090` expõe o serviço enquanto a porta `5000` é utilizada para debug da aplicação.
@@ -52,9 +52,9 @@ A porta `9090` expõe o serviço enquanto a porta `5000` é utilizada para debug
 Para visualizar os logs da aplicação a partir do container: `docker logs -f mock-api`
 
 ## TODO
-* Separar testes unitários dos testes integrados
-* Corrigir os testes ignorados
-* Corrigir Code Style
-* Adicionar plugin do FindBugs
-* Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
-* Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`
+- [X] Corrigir Code Style
+- [ ] Inserir exemplo do "arquivo de propriedades" no README
+- [ ] Separar testes unitários dos testes integrados
+- [ ] Corrigir os testes ignorados
+- [ ] Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
+- [ ] Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`

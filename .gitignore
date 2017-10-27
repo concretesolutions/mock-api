@@ -32,3 +32,5 @@ backup-temp/
 mocks-prod
 fake-api-data
 out
+bin
+.vscode

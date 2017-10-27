@@ -16,6 +16,21 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
 apply plugin: 'docker'
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
+
+findbugs {
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+    effort = "default"
+    reportLevel = "high"
+}
+
+checkstyle {
+    toolVersion = '8.3'
+    sourceSets= [sourceSets.main]
+    ignoreFailures = true
+}
 
 version = '4.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
@@ -37,7 +52,6 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'org.apache.httpcomponents:httpclient:4.4.1'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
-
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'br.com.six2six:fixture-factory:3.1.0'
 }
@@ -62,7 +76,7 @@ task codeCoverageReport(type: JacocoReport) {
 
 task buildDocker(type: Docker, dependsOn: build) {
     push = false
-    applicationName = 'concretesolutions/' + jar.baseName
+    applicationName = 'elemental-source/' + jar.baseName
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
@@ -71,3 +85,4 @@ task buildDocker(type: Docker, dependsOn: build) {
         }
     }
 }
+
