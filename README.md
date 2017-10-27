@@ -56,6 +56,5 @@ Para visualizar os logs da aplicação a partir do container: `docker logs -f mo
 * Separar testes unitários dos testes integrados
 * Corrigir os testes ignorados
 * Corrigir Code Style
-* Adicionar plugin do FindBugs
 * Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
 * Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`

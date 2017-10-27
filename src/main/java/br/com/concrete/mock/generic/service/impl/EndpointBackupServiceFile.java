@@ -12,6 +12,8 @@ import br.com.concrete.mock.infra.component.impl.JsonFormatterPretty;
 import br.com.concrete.mock.infra.property.FileExtensionProperty;
 import br.com.concrete.mock.infra.property.FileProperty;
 import com.google.gson.Gson;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +72,7 @@ public class EndpointBackupServiceFile implements EndpointBackupService {
 
         try {
             Files.createDirectories(Paths.get(pathName));
-            Files.write(Paths.get(fileName), endpointJson.getBytes());
-
+            Files.write(Paths.get(fileName), Arrays.asList(endpointJson), Charset.defaultCharset());
             LOGGER.info("Backup into " + fileName);
         } catch (IOException e) {
             LOGGER.error("Cannot backup endpoint {}", e);
