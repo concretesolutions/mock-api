@@ -7,37 +7,39 @@
 
 # Mock API
 
-App criado para fazer mock com REST utilizando JSON
+App created to mock with REST using JSON.
 
-## Regras
+## Rules
 
-Quando uma request é feita é seguido o seguinte fluxo:
+When a request is made the following flow is followed:
 
-* Existe na pasta do mock (conforme a propriedade `api.fileBase`)? Caso sim, retorna o mock
-* A uri se encaixa em algum pattern da lista de `api.uriConfigurations[].pattern`? Caso sim, vai redirecionar conforme a configuração e fazer fazer cache conforme o field `backup`
-* Se não entrar nos fluxos anteriores, vai redirecionar para o host padrão `api.host`
+* Does it exist in the mock folder (as per the `api.fileBase` property)? If so, return the mock. 
+* Does the uri fit into any pattern in the `api.uriConfigurations []. Pattern` list? If so, it will redirect according to the configuration and cache according to the `backup` field.
+* If it does not enter the previous flows, it will redirect to the default host `api.host`
 
-## Requisitos
+## Requirements
 * Java JDK 8
 * Gradle 4
 
 ## Run
 
-## Usando seu arquivo de propriedades
-Crie seu arquivo de propriedade `src/main/resources/application-custom.yml` e rode com o argumento `-Dspring.profiles.active=custom`. Exemplo:
+## Using Your Property File
+Create your `src / main / resources / application-custom.yml` property file and run it with the` -Dspring.profiles.active = custom` argument. Example:
+
 ```
 gradle bootRun -Dspring.profiles.active=custom
 ```
 
-## Usando imagem Docker
-Para gerar a imagem Docker do projeto, execute: 
+## Using Docker Image
+To generate the project Docker image, run: 
+
 ```
 gradle buildDocker
 ```
 
-Por padrão, o nome da imagem será `elemental-source/mock-api:VERSAO`.
+By default, the image name will be `elemental-source / mock-api: VERSAO`.
 
-Para rodar a aplicação, crie dois diretórios: um contendo o arquivo de configuração `application-custom.yml` e o outro contendo os arquivos de mock. Execute então:
+To run the application, create two directories: one containing the `application-custom.yml` configuration file and the other containing the mock files. Then run:
 
 ```
 docker run -d --name mock-api \
@@ -47,14 +49,14 @@ docker run -d --name mock-api \
        elemental-source/mock-api:VERSAO
 ```
 
-A porta `9090` expõe o serviço enquanto a porta `5000` é utilizada para debug da aplicação.
+The `9090` port exposes the service while the` 5000` port is used to debug the application.
 
-Para visualizar os logs da aplicação a partir do container: `docker logs -f mock-api`
+To view the application logs from the container: `docker logs -f mock-api`
 
-## TODO
-- [X] Corrigir Code Style
-- [ ] Inserir exemplo do "arquivo de propriedades" no README
-- [ ] Separar testes unitários dos testes integrados
-- [ ] Corrigir os testes ignorados
-- [ ] Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
-- [ ] Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`
+## ALL
+- [X] Correct Code Style
+- [ ] Insert example of "property file" in README
+- [ ] Separate unit tests from integrated tests
+- [ ] Fix skipping tests
+- [ ] Review dependencies (see, for example, if it is even necessary to have the GSON or modelmapper)
+- [ ] Use objectmapper as component: `compile ('com.fasterxml.jackson.datatype: jackson-datatype-jdk8')``
