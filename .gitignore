@@ -1,8 +1,6 @@
 target/
 .mvn/
 
-application-*.yml
-
 ### STS ###
 .classpath
 .factorypath
