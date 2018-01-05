@@ -11,6 +11,8 @@ api:
   # When is not find in repository, then will try to do a request in this host
   host: "http://www.mocky.io"
 
+  magicalHeaders: "Accept,User-Agent,Content-Type"
+
   # Default headers to do a request
   defaultHeaders:
     -

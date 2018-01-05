@@ -1,8 +1,6 @@
 target/
 .mvn/
 
-application-*.yml
-
 ### STS ###
 .classpath
 .factorypath
@@ -32,3 +30,5 @@ backup-temp/
 mocks-prod
 fake-api-data
 out
+bin
+.vscode

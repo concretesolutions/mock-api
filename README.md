@@ -1,60 +1,125 @@
-[![Build Status](https://travis-ci.org/concretesolutions/mock-api.svg?branch=master)](https://travis-ci.org/concretesolutions/mock-api)
-[![codecov.io](https://codecov.io/github/concretesolutions/mock-api/coverage.svg?branch=master)](https://codecov.io/github/concretesolutions/mock-api?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/67cdddf44d87495c84e3bddfdb5de074)](https://www.codacy.com/app/concrete/mock-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=concretesolutions/mock-api&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/elemental-source/mock-api.svg?branch=master)](https://travis-ci.org/elemental-source/mock-api)
+[![codecov.io](https://codecov.io/github/elemental-source/mock-api/coverage.svg?branch=master)](https://codecov.io/github/elemental-source/mock-api?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2be4911c74b14b68a37e78ca4c2c8273)](https://www.codacy.com/app/elemental-source/mock-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=elemental-source/mock-api&amp;utm_campaign=Badge_Grade)
 
 ## Coverage History
-![codecov.io](https://codecov.io/github/concretesolutions/mock-api/branch.svg?branch=master)
+![codecov.io](https://codecov.io/github/elemental-source/mock-api/branch.svg?branch=master)
 
 # Mock API
 
-App criado para fazer mock com REST utilizando JSON
+Allows for reusable http request/response cycles in your tests, similar to WireMock.
 
-## Regras
+## Features
 
-Quando uma request é feita é seguido o seguinte fluxo:
+* Capture live responses from external hosts and save the stubs locally
+* Define your mocked responses using JSON
+* Folder-based data files
+* Per-request conditional proxying
+* Simple YAML configuration
 
-* Existe na pasta do mock (conforme a propriedade `api.fileBase`)? Caso sim, retorna o mock
-* A uri se encaixa em algum pattern da lista de `api.uriConfigurations[].pattern`? Caso sim, vai redirecionar conforme a configuração e fazer fazer cache conforme o field `backup`
-* Se não entrar nos fluxos anteriores, vai redirecionar para o host padrão `api.host`
+## Rules
 
-## Requisitos
+All your requests should be directed to the application. When an HTTP request is made, the following matching rules are applied:
+
+1. Is there a valid mock data file (i.e. request/response pattern) existing in `api.fileBase` folder that matches the request pattern? If so, the mocked response is returned. 
+2. If not, does the request uri match any pattern described by the `api.uriConfigurations[].pattern` list? If so, the request will be dispatched to the matching `api.uriConfigurations[].host`.
+3. If none of above is true, the request is dispatched to the default host `api.host`.
+
+Should (2) or (3) occur, the response from an external host will be cached according to the `captureState` and `api.file.backup.path` properties. Next time the same request is made, it will be returned directly from the saved data file.
+
+## Example of a matched request
+
+Let's say you want to return the following mocked response for the following request: 
+
+```
+GET http://www.example.com/payments/111/description?code=ABCD
+```
+
+Expected response:
+
+```
+HTTP 200 (OK)
+{
+    "payment": {
+        "from": "John",
+        "to": "Fred",
+        "value": 33
+    }
+}
+```
+
+You should create the following mock data file (its name has no meaning, it can be anything you like):
+
+```
+{
+    // Request field describes what the request should look like in order to return the matched response.
+    // In this case, query parameter "code" should be equal to "ABCD".
+    // The request pattern is described by its method, headers, query parameters and body.
+    request": {
+        "query": {
+            "code": "ABCD"
+        }
+    },
+    // Response field describes the mocked response in case the request matches.
+    // You can define the response body and status code.
+    "response": {
+        "body": {
+            "payment": {
+                "from": "John",
+                "to": "Fred",
+                "value": 33
+            }
+        },
+        "httpStatus": 200
+        }
+}
+```
+
+Now, in order to properly use the data file, we should consider where it should be located. `mock-api` will parse the request and use the uri to search for the data file in the `api.fileBase` folder. In our example the request uri is `/payments/111/description?code=ABCD`, this means that the data file should be located in `${api.fileBase}/payments/111/description` folder (i.e. file location is based in uri parts and path parameters, other request fields are described in the data file itself). 
+
+## Requirements
+
 * Java JDK 8
 * Gradle 4
 
 ## Run
 
-## Usando seu arquivo de propriedades
-Crie seu arquivo de propriedade `src/main/resources/application-custom.yml` e rode com o argumento `-Dspring.profiles.active=custom`. Exemplo:
+### Using Your Property File
+Create a valid property file in `src/main/resources/application-custom.yml` then run with `-Dspring.profiles.active=custom` argument. Example:
+
 ```
 gradle bootRun -Dspring.profiles.active=custom
 ```
 
-## Usando imagem Docker
-Para gerar a imagem Docker do projeto, execute: 
+### Using Docker Image
+To generate the Docker image, run: 
+
 ```
 gradle buildDocker
 ```
 
-Por padrão, o nome da imagem será `concretesolutions/mock-api:VERSAO`.
+By default, the image name will be `elemental-source/mock-api:VERSION`.
 
-Para rodar a aplicação, crie dois diretórios: um contendo o arquivo de configuração `application-custom.yml` e o outro contendo os arquivos de mock. Execute então:
+In order to run the application, create two folders: one containing the `application-custom.yml` configuration file and the other containing the mock data files. Then run:
 
 ```
 docker run -d --name mock-api \
        -p 9090:9090 \
-       -v /path/para/arquivo/application-custom.yml:/config/application.yml \
-       -v /path/para/diretorio/dados/:/data \
-       concretesolutions/mock-api:VERSAO
+       -p 5000:5000 \
+       -v /path/to/application-custom.yml:/config/application.yml \
+       -v /path/to/mock/data/files:/data \
+       elemental-source/mock-api:VERSION
 ```
 
-A porta `9090` expõe o serviço enquanto a porta `5000` é utilizada para debug da aplicação.
+Port `9090` exposes the service while port `5000` can be used to debug the application.
 
-Para visualizar os logs da aplicação a partir do container: `docker logs -f mock-api`
+You can check application logs from the container: `docker logs -f mock-api`
 
 ## TODO
-* Separar testes unitários dos testes integrados
-* Corrigir os testes ignorados
-* Corrigir Code Style
-* Adicionar plugin do FindBugs
-* Revisar dependências (ver, por exemplo, se é mesmo necessário ter o GSON ou modelmapper)
-* Usar objectmapper como component: `compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')`
+
+- [X] Fix code Style
+- [ ] Create an example of a property file
+- [ ] Split unit from integrated tests
+- [ ] Fix skipping tests
+- [ ] Review dependencies (check, for instance, if it's even necessary to have both GSON and modelmapper dependencies)
+- [ ] Use objectmapper as component: `compile ('com.fasterxml.jackson.datatype: jackson-datatype-jdk8')``
