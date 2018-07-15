@@ -1,0 +1,12 @@
+Dockerfile
+docker-compose.yml
+out
+.gradle
+.idea
+build
+out
+.gitignore
+.travis.yml
+CONTRIBUTING.md
+LICENSE
+README.md

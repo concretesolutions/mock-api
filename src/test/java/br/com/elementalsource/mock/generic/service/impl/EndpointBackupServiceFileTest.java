@@ -77,6 +77,7 @@ public class EndpointBackupServiceFileTest {
         when(baseFileNameBuilder.buildPath(anyString(), anyString(), anyString())).thenReturn(pathName);
         when(fileExtensionProperty.getFileExtension()).thenReturn(fileExtension);
         when(fileNameGenerator.fromPath(anyString())).thenReturn(fileName);
+        when(fileProperty.getFileBase()).thenReturn(BACKUP_TEMP);
 
         endpointBackupServiceFile.doBackup(endpoint);
 

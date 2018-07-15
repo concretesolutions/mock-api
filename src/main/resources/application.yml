@@ -39,10 +39,10 @@ api:
 # Paths of json
 file:
   # Look for this path to find json with a request
-  base: "${MOCK_API_FILE_BASE}"
+  base: "${FILE_BASE:mocks-test}"
   extension: ".json"
   # Save request (cache) in this path
-  backup.path: "${MOCK_BACKUP_FILE_BASE}"
+  backup.path: "${FILE_BACKUP_PATH:backup-temp}"
 
 # Initialize app in capture mode. All requests will be saved
 captureState: true

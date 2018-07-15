@@ -12,17 +12,15 @@ import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -78,6 +76,14 @@ public class ExternalApi {
                 .concat(parameters);
 
         LOGGER.info("URL => {}", url);
+
+//        final WebClient.Builder webClientBuilder = WebClient
+//                .builder()
+//                .baseUrl(url)
+//                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+//
+//        webClientBuilder.build().method(HttpMethod.GET).retrieve().bodyToMono(Map.class).block();
+
         final ResponseEntity<String> apiResult = restTemplate.exchange(url, HttpMethod.valueOf(request.getMethod().name().toUpperCase()), entity,
                 String.class);
         return Optional.of(new ExternalApiResult(apiResult, uriConfiguration));

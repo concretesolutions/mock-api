@@ -3,11 +3,11 @@ package br.com.elementalsource.mock.generic.service.impl;
 import br.com.elementalsource.mock.configuration.service.CaptureExecutor;
 import br.com.elementalsource.mock.generic.model.Endpoint;
 import br.com.elementalsource.mock.generic.model.Request;
+import br.com.elementalsource.mock.generic.repository.EndpointRepository;
+import br.com.elementalsource.mock.generic.service.GenericApiService;
 import br.com.elementalsource.mock.infra.component.ExternalApi;
 import br.com.elementalsource.mock.infra.component.JsonValueCompiler;
 import br.com.elementalsource.mock.infra.property.ApiProperty;
-import br.com.elementalsource.mock.generic.repository.EndpointRepository;
-import br.com.elementalsource.mock.generic.service.GenericApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -46,66 +46,50 @@ public class GenericApiServiceImpl implements GenericApiService {
     // TODO refatorar esse método
     @Override
     public Optional<ResponseEntity<String>> genericResponseEntity(Request request) {
-        final Endpoint endpointNotSafe = getEndpoint(request).orElse(null);
+        final Optional<ResponseEntity<String>> apiResult = getEndpoint(request).
+                map(endpoint -> new ResponseEntity<>(jsonValueCompiler.compile(endpoint.getResponse().getBody()), endpoint.getResponse().getHttpStatus().orElse(HttpStatus.OK))).
+                map(Optional::of).
+                orElseGet(() -> externalApi.execute(request).map(r -> {
+                    captureExecutor.execute(r, new Endpoint.Builder(request, r.getApiResult()).build());
+                    return r.getApiResult();
+                }));
 
-        final Optional<ResponseEntity<String>> apiResult;
+        return apiResult.
+                map(responseEntity -> {
+                    final ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(responseEntity.getStatusCode());
 
-        // TODO refatorar: esta no if porque estava dando problema ao colocar
-        // dentro do orElse()
-        if (endpointNotSafe == null) {
-            apiResult = externalApi.execute(request).map(r -> {
-                captureExecutor.execute(r, new Endpoint.Builder(request, r.getApiResult()).build());
-                return r.getApiResult();
-            });
-        } else {
-            final String body = jsonValueCompiler.compile(endpointNotSafe.getResponse().getBody());
-            apiResult = Optional.of(
-                    new ResponseEntity<>(body, endpointNotSafe.getResponse().getHttpStatus().orElse(HttpStatus.OK)));
-        }
+                    apiProperty.getDefaultHeaders().forEach(header -> {
+                        final String headerName = header.getHeaderName();
+                        final String[] headerValues = header.getHeaderValues().toArray(new String[0]);
+                        bodyBuilder.header(headerName, headerValues);
+                    });
 
-        return apiResult.map(responseEntity -> {
-            final ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(responseEntity.getStatusCode());
-
-            apiProperty.getDefaultHeaders().forEach(header -> {
-                final String headerName = header.getHeaderName();
-                final String[] headerValues = header.getHeaderValues().stream().toArray(String[]::new);
-                bodyBuilder.header(headerName, headerValues);
-            });
-
-            return bodyBuilder.body(responseEntity.getBody());
-        });
+                    return bodyBuilder.body(responseEntity.getBody());
+                });
     }
 
     @Override
     public Optional<ResponseEntity<String>> genericResponseEntityGET(Request request, HttpServletRequest httpServletRequest) {
-        final Endpoint endpointNotSafe = getEndpoint(request).orElse(null);
+        final Optional<ResponseEntity<String>> apiResult = getEndpoint(request).
+                map(endpoint -> new ResponseEntity<>(jsonValueCompiler.compile(endpoint.getResponse().getBody()), endpoint.getResponse().getHttpStatus().orElse(HttpStatus.OK))).
+                map(Optional::of).
+                orElseGet(() -> externalApi.okHttpClientRequest(httpServletRequest, request).map(r -> {
+                    captureExecutor.execute(r, new Endpoint.Builder(request, r.getApiResult()).build());
+                    return r.getApiResult();
+                }));
 
-        final Optional<ResponseEntity<String>> apiResult;
+        return apiResult.
+                map(responseEntity -> {
+                    final ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(responseEntity.getStatusCode());
 
-        // TODO refatorar: esta no if porque estava dando problema ao colocar
-        // dentro do orElse()
-        if (endpointNotSafe == null) {
-            apiResult = externalApi.okHttpClientRequest(httpServletRequest, request).map(r -> {
-                captureExecutor.execute(r, new Endpoint.Builder(request, r.getApiResult()).build());
-                return r.getApiResult();
-            });
-        } else {
-            final String body = jsonValueCompiler.compile(endpointNotSafe.getResponse().getBody());
-            apiResult = Optional.of(
-                    new ResponseEntity<>(body, endpointNotSafe.getResponse().getHttpStatus().orElse(HttpStatus.OK)));
-        }
+                    apiProperty.getDefaultHeaders().forEach(header -> {
+                        final String headerName = header.getHeaderName();
+                        final String[] headerValues = header.getHeaderValues().toArray(new String[0]);
+                        bodyBuilder.header(headerName, headerValues);
+                    });
 
-        return apiResult.map(responseEntity -> {
-            final ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(responseEntity.getStatusCode());
-
-            apiProperty.getDefaultHeaders().forEach(header -> {
-                final String headerName = header.getHeaderName();
-                final String[] headerValues = header.getHeaderValues().stream().toArray(String[]::new);
-                bodyBuilder.header(headerName, headerValues);
-            });
-
-            return bodyBuilder.body(responseEntity.getBody());
-        });
+                    return bodyBuilder.body(responseEntity.getBody());
+                });
     }
 
     public Map<String, String> getHeaders(final HttpServletRequest request) {

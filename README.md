@@ -115,23 +115,26 @@ Port `9090` exposes the service while port `5000` can be used to debug the appli
 
 You can check application logs from the container: `docker logs -f mock-api`
 
-Example:
-
-```shell
-docker run --rm --name mock-api \
-       -p 9090:9090 \
-       -p 5000:5000 \
-       -v $(pwd)/src/test/resources:/config \
-       -v $(pwd)/src/test/mocks-test:/data \
-       elemental-source/mock-api:4.0.0-SNAPSHOT
-```
-
-And then get results: `curl -X GET 'http://localhost:9090/guests/132'`
-
 You can configure your program arguments in your IDE:
 ```
 --spring.config.location=file/name/example/application.yml
 ```
+
+#### Using docker-compose
+
+Run `docker-compose up --build`
+
+Get results: `curl -X GET 'http://localhost:9090/guests/132'`
+
+Look `api.host` property at `src/main/resources/application.yml` file.
+The value is http://www.mocky.io, the host that will be called if there is no file that dont match with request.
+If you create a new mock, you can call directly. Concat `localhost:9090` with the generated link, like this:
+
+```shell
+curl -X GET 'http://localhost:9090/v2/5b4bbb0c3100003503a7de45'
+```
+
+The response will not found at mock files and then, the external host will be called.
 
 ## TODO
 

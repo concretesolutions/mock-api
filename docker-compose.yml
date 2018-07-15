@@ -1,0 +1,18 @@
+version: '3.6'
+
+services:
+  mock_api:
+    build: .
+    image: elemental-source/mock-api:latest
+    container_name: mock_api
+    ports:
+      - 9090:9090
+      - 5000:5000
+    environment:
+      SERVER_PORT: 9090
+      FILE_BASE: "/data"
+      FILE_BACKUP_PATH: "/data-cache"
+    volumes:
+      - ./src/main/resources/application.yml:/config/application.yml
+      - ./mocks-test:/data
+      - ./backup-temp:/data-cache
