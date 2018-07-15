@@ -87,22 +87,22 @@ Now, in order to properly use the data file, we should consider where it should 
 ### Using Your Property File
 Create a valid property file in `src/main/resources/application-custom.yml` then run with `-Dspring.profiles.active=custom` argument. Example:
 
-```
-gradle bootRun -Dspring.profiles.active=custom
+```shell
+./gradlew bootRun -Dspring.profiles.active=custom
 ```
 
 ### Using Docker Image
 To generate the Docker image, run: 
 
-```
-gradle buildDocker
+```shell
+./gradlew buildDocker
 ```
 
 By default, the image name will be `elemental-source/mock-api:VERSION`.
 
 In order to run the application, create two folders: one containing the `application-custom.yml` configuration file and the other containing the mock data files. Then run:
 
-```
+```shell
 docker run -d --name mock-api \
        -p 9090:9090 \
        -p 5000:5000 \
@@ -114,6 +114,24 @@ docker run -d --name mock-api \
 Port `9090` exposes the service while port `5000` can be used to debug the application.
 
 You can check application logs from the container: `docker logs -f mock-api`
+
+Example:
+
+```shell
+docker run --rm --name mock-api \
+       -p 9090:9090 \
+       -p 5000:5000 \
+       -v $(pwd)/src/test/resources:/config \
+       -v $(pwd)/src/test/mocks-test:/data \
+       elemental-source/mock-api:4.0.0-SNAPSHOT
+```
+
+And then get results: `curl -X GET 'http://localhost:9090/guests/132'`
+
+You can configure your program arguments in your IDE:
+```
+--spring.config.location=file/name/example/application.yml
+```
 
 ## TODO
 

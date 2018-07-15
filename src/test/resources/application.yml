@@ -37,4 +37,5 @@ file:
 
 captureState: false
 
-debug: true
+#debug: true
+logging.level.ROOT: INFO

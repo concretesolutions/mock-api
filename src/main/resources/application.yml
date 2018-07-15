@@ -47,4 +47,5 @@ file:
 # Initialize app in capture mode. All requests will be saved
 captureState: true
 
-debug: true
+#debug: true
+logging.level.ROOT: INFO
