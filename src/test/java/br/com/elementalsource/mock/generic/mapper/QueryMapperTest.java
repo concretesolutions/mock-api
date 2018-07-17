@@ -1,6 +1,7 @@
 package br.com.elementalsource.mock.generic.mapper;
 
 import com.google.common.collect.ImmutableMap;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,8 +15,12 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class QueryMapperTest {
 
-    @InjectMocks
     private QueryMapper queryMapper;
+
+    @Before
+    public void init() {
+        this.queryMapper = new QueryMapper(new QueryDecoder().decoderFactoryImplementation(""));
+    }
 
     @Test
     public void shouldConvertNullQuery() {

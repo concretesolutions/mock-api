@@ -76,30 +76,6 @@ public class GenericApiServiceImpl implements GenericApiService {
                 });
     }
 
-    @Override
-    public Optional<ResponseEntity<String>> genericResponseEntityGET(Request request, HttpServletRequest httpServletRequest) {
-        final Optional<ResponseEntity<String>> apiResult = getEndpoint(request).
-                map(endpoint -> new ResponseEntity<>(combinedJsonValueCompiler.compile(endpoint.getResponse().getBody()), endpoint.getResponse().getHttpStatus().orElse(HttpStatus.OK))).
-                map(Optional::of).
-                orElseGet(() -> externalApi.okHttpClientRequest(httpServletRequest, request).map(r -> {
-                    captureExecutor.execute(r, new Endpoint.Builder(request, r.getApiResult()).build());
-                    return r.getApiResult();
-                }));
-
-        return apiResult.
-                map(responseEntity -> {
-                    final ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(responseEntity.getStatusCode());
-
-                    apiProperty.getDefaultHeaders().forEach(header -> {
-                        final String headerName = header.getHeaderName();
-                        final String[] headerValues = header.getHeaderValues().toArray(new String[0]);
-                        bodyBuilder.header(headerName, headerValues);
-                    });
-
-                    return bodyBuilder.body(responseEntity.getBody());
-                });
-    }
-
     public Map<String, String> getHeaders(final HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();

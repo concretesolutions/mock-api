@@ -1,6 +1,5 @@
 package br.com.elementalsource.mock;
 
-import okhttp3.OkHttpClient;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.boot.SpringApplication;
@@ -24,11 +23,6 @@ public class ApiApplication {
         HttpClient httpClient = HttpClientBuilder.create().build();
         ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
         return new RestTemplate(requestFactory);
-    }
-
-    @Bean
-    public OkHttpClient okHttpClient(){
-        return new OkHttpClient();
     }
 
 }

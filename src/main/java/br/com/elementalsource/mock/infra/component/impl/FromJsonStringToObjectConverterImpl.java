@@ -21,7 +21,7 @@ public class FromJsonStringToObjectConverterImpl implements FromJsonStringToObje
                         jsonElement.getAsJsonObject() :
                         jsonElement.getAsJsonArray()
                 )
-                .orElse(JSON_PARSER.parse(""));
+                .orElse(JSON_PARSER.parse("{}"));
     }
 
 }

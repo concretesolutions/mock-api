@@ -56,15 +56,8 @@ public class GenericApiController {
                                                        final Optional<Object> requestBody) {
         logRequest(request, requestBody);
 
-        Optional<ResponseEntity<String>> responseEntity;
-        if((request.getMethod().equalsIgnoreCase(HttpMethod.GET.name()))&&
-                (request.getQueryString() != null)){
-            responseEntity = genericApiService
-                    .genericResponseEntityGET(requestMapper.mapper(request, requestBody), request);
-        }else {
-            responseEntity = genericApiService
-                    .genericResponseEntity(requestMapper.mapper(request, requestBody));
-        }
+        Optional<ResponseEntity<String>> responseEntity = genericApiService
+                .genericResponseEntity(requestMapper.mapper(request, requestBody));
 
         final ResponseEntity<String> result = responseEntity
                 .map(r -> {

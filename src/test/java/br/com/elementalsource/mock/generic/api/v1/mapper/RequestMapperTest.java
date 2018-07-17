@@ -1,15 +1,14 @@
 package br.com.elementalsource.mock.generic.api.v1.mapper;
 
+import br.com.elementalsource.mock.generic.mapper.QueryDecoder;
 import br.com.elementalsource.mock.generic.model.Request;
 import br.com.elementalsource.mock.generic.mapper.HeaderMapper;
 import br.com.elementalsource.mock.generic.mapper.QueryMapper;
 import com.google.common.collect.ImmutableMap;
 import org.json.JSONException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -25,13 +24,17 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class RequestMapperTest {
 
-    @InjectMocks
     private RequestMapper requestMapper;
 
-    @Mock(answer = Answers.CALLS_REAL_METHODS)
     private QueryMapper queryMapper;
-    @Mock(answer = Answers.CALLS_REAL_METHODS)
     private HeaderMapper headerMapper;
+
+    @Before
+    public void init() {
+        this.queryMapper = new QueryMapper(new QueryDecoder().decoderFactoryImplementation(""));
+        this.headerMapper = new HeaderMapper();
+        this.requestMapper = new RequestMapper(queryMapper, headerMapper);
+    }
 
     @Test
     public void shouldMapRequest() throws URISyntaxException {

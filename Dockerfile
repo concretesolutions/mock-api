@@ -15,7 +15,7 @@ RUN ./gradlew build; exit 0
 
 COPY src $BUILD_PATH/src
 COPY mocks-test $BUILD_PATH/mocks-test
-COPY backup-temp $BUILD_PATH/backup-temp
+RUN mkdir $BUILD_PATH/backup-temp
 
 RUN ./gradlew build
 

@@ -10,9 +10,9 @@ cache:
   - "$HOME/.gradle/wrapper/"
 script:
 - gradle check
-- gradle codeCoverageReport
-after_success:
-- bash <(curl -s https://codecov.io/bash) -t
+#- gradle codeCoverageReport
+#after_success:
+#- bash <(curl -s https://codecov.io/bash) -t
 
 notifications:
   email: false

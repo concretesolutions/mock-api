@@ -1,5 +1,4 @@
 # vmoptions: -Dspring.profiles.active=test
-
 server.port: 9090
 
 api:
@@ -46,6 +45,9 @@ file:
 
 # Initialize app in capture mode. All requests will be saved
 captureState: true
+
+# Optional, use if you want decode query parameters
+decoder.characterEncoding: "UTF-8"
 
 #debug: true
 logging.level.ROOT: INFO

@@ -14,6 +14,4 @@ public interface GenericApiService {
 
 	Map<String, String> getHeaders(final HttpServletRequest request);
 
-	Optional<ResponseEntity<String>> genericResponseEntityGET(Request request, HttpServletRequest httpServletRequest);
-
 }
