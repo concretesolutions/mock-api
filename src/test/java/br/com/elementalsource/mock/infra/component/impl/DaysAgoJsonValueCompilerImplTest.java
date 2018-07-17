@@ -11,10 +11,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JsonValueCompilerImplTest {
+public class DaysAgoJsonValueCompilerImplTest {
 
     @InjectMocks
-    private JsonValueCompilerImpl jsonValueCompiler;
+    private DaysAgoJsonValueCompilerImpl jsonValueCompiler;
 
     @Test
     public void shouldBeEqualWhenNotExistVariables() throws JSONException {

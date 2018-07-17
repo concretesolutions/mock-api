@@ -15,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,16 +28,16 @@ public class GenericApiServiceImpl implements GenericApiService {
     private final EndpointRepository endpointRepository;
     private final ExternalApi externalApi;
     private final CaptureExecutor captureExecutor;
-    private final JsonValueCompiler jsonValueCompiler;
+    private final JsonValueCompiler combinedJsonValueCompiler;
     private final ApiProperty apiProperty;
 
     @Autowired
     public GenericApiServiceImpl(@Qualifier("EndpointRepositoryModel") EndpointRepository endpointRepository,
-                                 ExternalApi externalApi, CaptureExecutor captureExecutor, JsonValueCompiler jsonValueCompiler, ApiProperty apiProperty) {
+                                 ExternalApi externalApi, CaptureExecutor captureExecutor, List<JsonValueCompiler> jsonValueCompilers, ApiProperty apiProperty) {
         this.endpointRepository = endpointRepository;
         this.externalApi = externalApi;
         this.captureExecutor = captureExecutor;
-        this.jsonValueCompiler = jsonValueCompiler;
+        this.combinedJsonValueCompiler = combineFunctions(jsonValueCompilers);
         this.apiProperty = apiProperty;
     }
 
@@ -43,11 +45,17 @@ public class GenericApiServiceImpl implements GenericApiService {
         return endpointRepository.getByMethodAndRequest(request);
     }
 
+    // TODO talvez extrair para uma classe
+    private JsonValueCompiler combineFunctions(List<JsonValueCompiler> list){
+        return list.stream().reduce((a,b) -> (String t) -> a.apply(b.apply(t))).orElse((String t) -> t);
+    }
+
     // TODO refatorar esse método
     @Override
     public Optional<ResponseEntity<String>> genericResponseEntity(Request request) {
+
         final Optional<ResponseEntity<String>> apiResult = getEndpoint(request).
-                map(endpoint -> new ResponseEntity<>(jsonValueCompiler.compile(endpoint.getResponse().getBody()), endpoint.getResponse().getHttpStatus().orElse(HttpStatus.OK))).
+                map(endpoint -> new ResponseEntity<>(combinedJsonValueCompiler.compile(endpoint.getResponse().getBody()), endpoint.getResponse().getHttpStatus().orElse(HttpStatus.OK))).
                 map(Optional::of).
                 orElseGet(() -> externalApi.execute(request).map(r -> {
                     captureExecutor.execute(r, new Endpoint.Builder(request, r.getApiResult()).build());
@@ -71,7 +79,7 @@ public class GenericApiServiceImpl implements GenericApiService {
     @Override
     public Optional<ResponseEntity<String>> genericResponseEntityGET(Request request, HttpServletRequest httpServletRequest) {
         final Optional<ResponseEntity<String>> apiResult = getEndpoint(request).
-                map(endpoint -> new ResponseEntity<>(jsonValueCompiler.compile(endpoint.getResponse().getBody()), endpoint.getResponse().getHttpStatus().orElse(HttpStatus.OK))).
+                map(endpoint -> new ResponseEntity<>(combinedJsonValueCompiler.compile(endpoint.getResponse().getBody()), endpoint.getResponse().getHttpStatus().orElse(HttpStatus.OK))).
                 map(Optional::of).
                 orElseGet(() -> externalApi.okHttpClientRequest(httpServletRequest, request).map(r -> {
                     captureExecutor.execute(r, new Endpoint.Builder(request, r.getApiResult()).build());

@@ -9,13 +9,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class JsonValueCompilerImpl implements JsonValueCompiler {
+public class DaysAgoJsonValueCompilerImpl implements JsonValueCompiler {
+
+    // http://regexr.com/3f7lq
+    private static final Pattern PATTERN = Pattern.compile("\\#\\{\\{(\\d)+daysAgo:([a-z]+?.*?[a-z]+?)\\}\\}", Pattern.CASE_INSENSITIVE);
 
     @Override
     public String compile(String json) {
-        // http://regexr.com/3f7lq
-        final Pattern p = Pattern.compile("\\#\\{\\{(\\d)+daysAgo:([a-z]+?.*?[a-z]+?)\\}\\}", Pattern.CASE_INSENSITIVE);
-        final Matcher m = p.matcher(json);
+
+        final Matcher m = PATTERN.matcher(json);
 
         final StringBuffer sb = new StringBuffer();
         while (m.find()) {

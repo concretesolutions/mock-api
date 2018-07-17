@@ -11,7 +11,10 @@
       },
       {
         "cc": "31",
-        "ca": "32"
+        "ca": "32",
+        "name":"#{{param:name}}",
+        "surname":"#{{param:surname}}"
+
       }
     ]
   }
