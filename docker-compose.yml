@@ -3,7 +3,7 @@ version: '3.6'
 services:
   mock_api:
     build: .
-    image: elemental-source/mock-api:latest
+    image: elementalsource/mock-api:latest
     container_name: mock_api
     ports:
       - 9090:9090
