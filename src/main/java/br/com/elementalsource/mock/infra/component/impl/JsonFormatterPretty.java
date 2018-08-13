@@ -14,7 +14,6 @@ public class JsonFormatterPretty implements JsonFormatter {
     public String format(final String jsonString) {
         final JsonParser parser = new JsonParser();
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
         final JsonElement el = parser.parse(jsonString);
         return gson.toJson(el).concat("\n");
     }

@@ -1,12 +1,13 @@
 package br.com.elementalsource.mock.infra.component.file;
 
-import br.com.elementalsource.mock.infra.property.FileProperty;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import br.com.elementalsource.mock.infra.property.FileProperty;
 
 public class BaseFileNameBuilderBase implements BaseFileNameBuilder {
 
     private final FileProperty fileProperty;
-
+    
     public BaseFileNameBuilderBase(FileProperty fileProperty) {
         this.fileProperty = fileProperty;
     }

@@ -2,6 +2,7 @@ package br.com.elementalsource.mock.infra.component.impl;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +31,7 @@ public class ParameterJsonValueCompilerImpl implements JsonValueCompiler {
         final StringBuffer sb = new StringBuffer();
         while (m.find()) {
             String paramName = m.group(1);
-            String paramValue = request.getParameter(paramName);
+            String paramValue = getValue(paramName);
 
             if(paramValue != null){
                 m.appendReplacement(sb, paramValue);
@@ -38,6 +39,10 @@ public class ParameterJsonValueCompilerImpl implements JsonValueCompiler {
         }
         m.appendTail(sb);
         return sb.toString();
+    }
+
+    private String getValue(String paramName) {
+        return Optional.ofNullable(request.getParameter(paramName)).orElse((String) request.getAttribute(paramName));
     }
 
 }

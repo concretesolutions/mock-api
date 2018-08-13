@@ -1,11 +1,15 @@
 package br.com.elementalsource.mock.generic.api.v1.controller;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import br.com.elementalsource.mock.generic.service.GenericApiService;
 import br.com.elementalsource.mock.infra.component.JsonFormatter;
 import br.com.elementalsource.mock.infra.component.RequestFormatter;
 import br.com.elementalsource.mock.generic.api.v1.mapper.RequestMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +51,9 @@ public class GenericApiController {
 
     private void logJson(final String jsonString) {
         try {
-            LOGGER.info(jsonFormatter.format(jsonString));
+            if(isNotBlank(jsonString)){
+                LOGGER.info(jsonFormatter.format(jsonString));
+            }
         } catch (JsonParseException e) {
             LOGGER.warn("cannot print json: " + jsonString);
         }
